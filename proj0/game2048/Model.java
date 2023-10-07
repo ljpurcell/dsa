@@ -114,12 +114,82 @@ public class Model extends Observable {
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
+        for (int col = board.size() - 1; col >= 0; col--) {
+            boolean mergeInColumn = doMergesForColumn(col);
+            boolean moveInColumn = finalPlacementForColumn(col);
+
+            if (mergeInColumn || moveInColumn) {
+                changed = true;
+            }
+        }
+
+
         checkGameOver();
         if (changed) {
             setChanged();
         }
         return changed;
     }
+
+    /** Merges the tiles for a column. Helper for tilt */
+    private boolean doMergesForColumn(int col) {
+        boolean changed = false;
+
+        for (int row = board.size() - 1; row > 0; row--) {
+
+            Tile t = board.tile(col, row);
+
+            if (t != null) {
+
+                for (int next = row - 1; next >= 0; next--) {
+
+                    Tile t2 = board.tile(col, next);
+
+                    if (t2 != null) {
+
+                        if (t.value() == t2.value()) {
+                            boolean mergeOccurred = board.move(col, row, t2);
+
+                            if (mergeOccurred) {
+                                score += 2 * t.value();
+                            }
+
+                            row = next;
+                            changed = true;
+                        }
+                        else {
+                            // No merges between row and next, start looking from next
+                            row = next;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return changed;
+    }
+
+
+    /** Moves the tiles for a column. Helper for tilt */
+    private boolean finalPlacementForColumn(int col) {
+        boolean changed = false;
+        for (int row = board.size() - 1; row > 0; row--) {
+            Tile t = board.tile(col, row);
+            if (t == null) {
+                for (int next = row - 1; next >= 0; next--) {
+                    Tile t2 = board.tile(col, next);
+                    if (t2 != null) {
+                        board.move(col, row, t2);
+                        changed = true;
+                    }
+                }
+            }
+        }
+
+        return changed;
+    }
+
 
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
@@ -182,14 +252,11 @@ public class Model extends Observable {
     private static boolean atLeastOneMergeExists(Board b) {
         for (int col = 0; col < b.size(); col++) {
             for (int row = 0; row < b.size(); row++) {
-                boolean checkNextCol = col < b.size() - 1;
-                boolean checkNextRow = row < b.size() - 1;
-
-                if (checkNextCol && b.tile(col, row).value() == b.tile(col + 1, row).value()) {
+                if (col < b.size() - 1 && b.tile(col, row).value() == b.tile(col + 1, row).value()) {
                     return true;
                 }
 
-                if (checkNextRow && b.tile(col, row).value() == b.tile(col, row + 1).value()) {
+                if (row < b.size() - 1 && b.tile(col, row).value() == b.tile(col, row + 1).value()) {
                     return true;
                 }
             }
