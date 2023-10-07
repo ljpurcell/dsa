@@ -172,25 +172,29 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        if (emptySpaceExists(b)) {
-            return true;
-        }
-        else {
-            for (int col = 0; col < b.size(); col++) {
-                for (int row = 0; row < b.size(); row++) {
-                    boolean checkNextCol = col < b.size() - 1;
-                    boolean checkNextRow = row < b.size() - 1;
+        return emptySpaceExists(b) || atLeastOneMergeExists(b);
+    }
 
-                    if (checkNextCol && b.tile(col, row).value() == b.tile(col + 1, row).value()) {
-                      return true;
-                    }
+    /** Helper method for atLeastOneMoveExists.
+     *  Returns true if there are any adjacent tiles that have
+     *  the same value.
+     */
+    private static boolean atLeastOneMergeExists(Board b) {
+        for (int col = 0; col < b.size(); col++) {
+            for (int row = 0; row < b.size(); row++) {
+                boolean checkNextCol = col < b.size() - 1;
+                boolean checkNextRow = row < b.size() - 1;
 
-                    if (checkNextRow && b.tile(col, row).value() == b.tile(col, row + 1).value()) {
-                       return true;
-                    }
+                if (checkNextCol && b.tile(col, row).value() == b.tile(col + 1, row).value()) {
+                    return true;
+                }
+
+                if (checkNextRow && b.tile(col, row).value() == b.tile(col, row + 1).value()) {
+                    return true;
                 }
             }
         }
+
         return false;
     }
 
