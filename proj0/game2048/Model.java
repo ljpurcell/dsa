@@ -107,12 +107,8 @@ public class Model extends Observable {
      *    and the trailing tile does not.
      * */
     public boolean tilt(Side side) {
-        boolean changed;
-        changed = false;
-
-        // TODO: Modify this.board (and perhaps this.score) to account
-        // for the tilt to the Side SIDE. If the board changed, set the
-        // changed local variable to true.
+        boolean changed = false;
+        board.setViewingPerspective(side);
 
         for (int col = board.size() - 1; col >= 0; col--) {
             boolean mergeInColumn = doMergesForColumn(col);
@@ -128,6 +124,8 @@ public class Model extends Observable {
         if (changed) {
             setChanged();
         }
+
+        board.setViewingPerspective(Side.NORTH);
         return changed;
     }
 
@@ -135,33 +133,27 @@ public class Model extends Observable {
     private boolean doMergesForColumn(int col) {
         boolean changed = false;
 
-        for (int row = board.size() - 1; row > 0; row--) {
+        for (int topRow = board.size() - 1; topRow > 0; topRow--) {
+            Tile topTile = board.tile(col, topRow);
 
-            Tile t = board.tile(col, row);
+            if (topTile != null) {
+                for (int bottomRow = topRow - 1; bottomRow >= 0; bottomRow--) {
+                    Tile bottomTile = board.tile(col, bottomRow);
 
-            if (t != null) {
+                    if (bottomTile != null) {
 
-                for (int next = row - 1; next >= 0; next--) {
-
-                    Tile t2 = board.tile(col, next);
-
-                    if (t2 != null) {
-
-                        if (t.value() == t2.value()) {
-                            boolean mergeOccurred = board.move(col, row, t2);
+                        if (topTile.value() == bottomTile.value()) {
+                            boolean mergeOccurred = board.move(col, topRow, bottomTile);
 
                             if (mergeOccurred) {
-                                score += 2 * t.value();
+                                score += 2 * topTile.value();
                             }
 
-                            row = next;
                             changed = true;
                         }
-                        else {
-                            // No merges between row and next, start looking from next
-                            row = next;
-                            break;
-                        }
+
+                        topRow = bottomRow + 1;
+                        break;
                     }
                 }
             }
@@ -175,13 +167,18 @@ public class Model extends Observable {
     private boolean finalPlacementForColumn(int col) {
         boolean changed = false;
         for (int row = board.size() - 1; row > 0; row--) {
-            Tile t = board.tile(col, row);
-            if (t == null) {
+            Tile topTile = board.tile(col, row);
+            if (topTile == null) {
                 for (int next = row - 1; next >= 0; next--) {
-                    Tile t2 = board.tile(col, next);
-                    if (t2 != null) {
-                        board.move(col, row, t2);
+                    Tile bottomTile = board.tile(col, next);
+                    if (bottomTile != null) {
+                        boolean mergeOccurred = board.move(col, row, bottomTile);
+
+                        if (mergeOccurred) {
+                            score += 2 * bottomTile.value();
+                        }
                         changed = true;
+                        break;
                     }
                 }
             }
