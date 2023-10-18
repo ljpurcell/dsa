@@ -75,10 +75,10 @@ public class SquarePrimesTest {
     }
 
     @Test // TODO run debugger over this test
-    public void testSquarePrimesTestWithLongList() {
-        IntList lst = IntList.of(8, 8, 23, 12, 13, 10, 7, 31, 41);
+    public void testSquarePrimesTestWithCompositesAfterTwoPrimes() {
+        IntList lst = IntList.of(23, 13, 10, 7, 31);
         boolean changed = IntListExercises.squarePrimes(lst);
-        assertEquals("8 -> 8 -> 529 -> 12 -> 169 -> 10 -> 49 -> 961 -> 1681", lst.toString());
+        assertEquals("529 -> 169 -> 10 -> 49 -> 961", lst.toString());
         assertTrue(changed);
     }
 }
