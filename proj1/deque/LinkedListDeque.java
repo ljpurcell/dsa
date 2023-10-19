@@ -18,6 +18,8 @@ public class LinkedListDeque {
 
     public LinkedListDeque() {
         sentinel = new ListNode(null, -100, null);
+        sentinel.previous = sentinel;
+        sentinel.next = sentinel;
         size = 0;
     }
 
@@ -32,13 +34,11 @@ public class LinkedListDeque {
 
     // must be constant time
     public int removeFirst() {
-        if (sentinel.next != null) {
+        if (sentinel.next != sentinel) {
             int item = sentinel.next.item;
             ListNode newFirst = sentinel.next.next;
             sentinel.next = newFirst;
-            if (newFirst != null) {
-                newFirst.previous = sentinel;
-            }
+            newFirst.previous = sentinel;
             size -= 1;
             return item;
         }
@@ -58,13 +58,11 @@ public class LinkedListDeque {
 
     // must be constant time
     public int removeLast() {
-         if (sentinel.previous != null) {
+         if (sentinel.previous != sentinel) {
              int item = sentinel.previous.item;
              ListNode newLast = sentinel.previous.previous;
              sentinel.previous = newLast;
-             if (newLast != null) {
-                 newLast.next = sentinel;
-             }
+             newLast.next = sentinel;
              size -= 1;
              return item;
          }

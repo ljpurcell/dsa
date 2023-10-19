@@ -29,9 +29,6 @@ public class LinkedListDequeTest {
 
 		lld1.addLast(99);
 		assertEquals(3, lld1.size());
-
-		System.out.println("Printing out deque: ");
-		lld1.printDeque();
     }
 
     @Test
@@ -70,6 +67,20 @@ public class LinkedListDequeTest {
         errorMsg += "  actual size() returned 0\n";
 
         assertEquals(errorMsg, 0, size);
+    }
+
+    @Test
+    public void printTest() {
+        LinkedListDeque lld1 = new LinkedListDeque();
+        lld1.addFirst(17);
+        lld1.addFirst(1);
+        lld1.addLast(77);
+        lld1.addLast(100);
+
+        System.out.println("Printing out deque: ");
+        lld1.printDeque();
+        System.out.println("Should see: ");
+        System.out.println("1 17 77 100");
     }
 
     @Test
