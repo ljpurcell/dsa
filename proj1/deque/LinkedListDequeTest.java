@@ -14,36 +14,32 @@ public class LinkedListDequeTest {
      * && is the "and" operation. */
     public void addIsEmptySizeTest() {
 
-        System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-        /*
-        LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
+        LinkedListDeque lld1 = new LinkedListDeque();
 
 		assertTrue("A newly initialized LLDeque should be empty", lld1.isEmpty());
-		lld1.addFirst("front");
+		lld1.addFirst(23);
 
 		// The && operator is the same as "and" in Python.
 		// It's a binary operator that returns true if both arguments true, and false otherwise.
         assertEquals(1, lld1.size());
         assertFalse("lld1 should now contain 1 item", lld1.isEmpty());
 
-		lld1.addLast("middle");
+		lld1.addLast(42);
 		assertEquals(2, lld1.size());
 
-		lld1.addLast("back");
+		lld1.addLast(99);
 		assertEquals(3, lld1.size());
 
 		System.out.println("Printing out deque: ");
 		lld1.printDeque();
-		*/
     }
 
     @Test
     /** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
     public void addRemoveTest() {
 
-        System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-        /*
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        LinkedListDeque lld1 = new LinkedListDeque();
+
 		// should be empty
 		assertTrue("lld1 should be empty upon initialization", lld1.isEmpty());
 
@@ -54,16 +50,13 @@ public class LinkedListDequeTest {
 		lld1.removeFirst();
 		// should be empty
 		assertTrue("lld1 should be empty after removal", lld1.isEmpty());
-        */
     }
 
     @Test
     /* Tests removing from an empty deque */
     public void removeEmptyTest() {
 
-        System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
-        /*
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<>();
+        LinkedListDeque lld1 = new LinkedListDeque();
         lld1.addFirst(3);
 
         lld1.removeLast();
@@ -77,7 +70,6 @@ public class LinkedListDequeTest {
         errorMsg += "  actual size() returned 0\n";
 
         assertEquals(errorMsg, 0, size);
-        */
     }
 
     @Test
