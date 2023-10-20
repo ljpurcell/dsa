@@ -1,12 +1,12 @@
 package deque;
 
-public class LinkedListDeque {
-    private static class ListNode {
+public class LinkedListDeque<T> {
+    private class ListNode {
         ListNode previous;
-        int item;
+        T item;
         ListNode next;
 
-        public ListNode(ListNode p, int i, ListNode n) {
+        public ListNode(ListNode p, T i, ListNode n) {
             previous = p;
             item = i;
             next = n;
@@ -17,57 +17,50 @@ public class LinkedListDeque {
     int size;
 
     public LinkedListDeque() {
-        sentinel = new ListNode(null, -100, null);
+        sentinel = new ListNode(null, null, null);
         sentinel.previous = sentinel;
         sentinel.next = sentinel;
         size = 0;
     }
 
     // must be constant time
-    public void addFirst(int item) {
+    public void addFirst(T item) {
         sentinel.next = new ListNode(sentinel, item, sentinel.next);
-        if (sentinel.next.next != null) {
-            sentinel.next.next.previous = sentinel.next;
-        }
+        sentinel.next.next.previous = sentinel.next;
         size += 1;
     }
 
     // must be constant time
-    public int removeFirst() {
+    public T removeFirst() {
+        T item = null;
         if (sentinel.next != sentinel) {
-            int item = sentinel.next.item;
+            item = sentinel.next.item;
             ListNode newFirst = sentinel.next.next;
             sentinel.next = newFirst;
             newFirst.previous = sentinel;
             size -= 1;
-            return item;
         }
-
-        return -1;
+        return item;
     }
 
     // must be constant time
-    public void addLast(int item) {
-        ListNode newLast = new ListNode(sentinel.previous, item, sentinel);
-        sentinel.previous = newLast;
-        if (sentinel.previous.previous != null) {
-            sentinel.previous.previous.next = newLast;
-        }
+    public void addLast(T item) {
+        sentinel.previous = new ListNode(sentinel.previous, item, sentinel);
+        sentinel.previous.previous.next = sentinel.previous;
         size += 1;
     }
 
     // must be constant time
-    public int removeLast() {
-         if (sentinel.previous != sentinel) {
-             int item = sentinel.previous.item;
-             ListNode newLast = sentinel.previous.previous;
-             sentinel.previous = newLast;
-             newLast.next = sentinel;
-             size -= 1;
-             return item;
-         }
-
-         return -1;
+    public T removeLast() {
+        T item = null;
+        if (sentinel.previous != sentinel) {
+            item = sentinel.previous.item;
+            ListNode newLast = sentinel.previous.previous;
+            sentinel.previous = newLast;
+            newLast.next = sentinel;
+            size -= 1;
+        }
+        return item;
     }
 
     public boolean isEmpty() {
@@ -81,14 +74,28 @@ public class LinkedListDeque {
 
 
     public void printDeque() {
+        for (ListNode node = sentinel.next; node != sentinel; node = node.next) {
+            System.out.print(node.item + " ");
+        }
+        System.out.println();
+    }
 
+
+    // must use iteration
+    public T get(int index) {
+        if (index > size - 1) {
+            return null;
+        }
+
+        ListNode p = null;
+        for (int i = 0; i < index; i++) {
+           p = p.next;
+        }
+
+        return p.item;
     }
 
     /*
-
-    // must use iteration
-    public T get(int index) { return  T; }
-
     public T getRecursive(int index) { return T; }
 
 
