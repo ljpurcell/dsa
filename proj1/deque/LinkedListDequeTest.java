@@ -95,8 +95,8 @@ public class LinkedListDequeTest {
 
         boolean passed1 = false;
         boolean passed2 = false;
-        assertEquals("Should return null when removeFirst is called on an empty Deque,", null, lld1.removeFirst());
-        assertEquals("Should return null when removeLast is called on an empty Deque,", null, lld1.removeLast());
+        assertNull("Should return null when removeFirst is called on an empty Deque,", lld1.removeFirst());
+        assertNull("Should return null when removeLast is called on an empty Deque,", lld1.removeLast());
     }
 
     @Test
@@ -115,5 +115,25 @@ public class LinkedListDequeTest {
         for (double i = 999999; i > 500000; i--) {
             assertEquals("Should have the same value", i, (double) lld1.removeLast(), 0.0);
         }
+    }
+
+    @Test
+    public void testGetMethods() {
+        LinkedListDeque<String> lld1 = new LinkedListDeque<>();
+        lld1.addFirst("This is item ONE");
+        lld1.addLast("Item two");
+        lld1.addLast("Item three");
+        lld1.addLast("This is the one you want");
+
+        String resultGet = lld1.get(3);
+        String resultGetRecursive = lld1.get(3);
+
+        String resultGetNoElement = lld1.get(400);
+        String resultGetRecursiveNoElement = lld1.getRecursive(400);
+
+        assertEquals("This is the one you want", resultGet);
+        assertEquals("This is the one you want", resultGetRecursive);
+        assertNull("GET method should have returned null", resultGetNoElement);
+        assertNull("GET RECURSIVE method should have returned null", resultGetRecursiveNoElement);
     }
 }

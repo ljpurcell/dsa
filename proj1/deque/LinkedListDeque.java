@@ -87,19 +87,33 @@ public class LinkedListDeque<T> {
             return null;
         }
 
-        ListNode p = null;
+        ListNode p = sentinel.next;
         for (int i = 0; i < index; i++) {
-           p = p.next;
+            p = p.next;
         }
 
         return p.item;
     }
 
+    public T getRecursive(int index) {
+        if (index > size - 1) {
+            return null;
+        }
+
+        return getElementNAway(sentinel.next, index);
+    }
+
+    private T getElementNAway(ListNode o, int off) {
+        if (off == 0) {
+            return o.item;
+        }
+
+        return getElementNAway(o.next, off - 1);
+    }
+
+
+
     /*
-    public T getRecursive(int index) { return T; }
-
-
-
     public Iterator<T> iterator() {}
 
     public boolean equals(Object o) {}
