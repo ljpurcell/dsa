@@ -120,7 +120,7 @@ public class LinkedListDeque<T> {
     }
 
     public boolean equals(Object o) {
-        if (!(o instanceof LinkedListDeque)) {
+        if (!(o instanceof LinkedListDeque) || ((LinkedListDeque<?>) o).size() != size) {
             return false;
         }
 

@@ -120,7 +120,17 @@ public class ArrayDeque<T> {
     }
 
     public boolean equals(Object o) {
-        return false;
+        if (!(o instanceof ArrayDeque) || ((ArrayDeque<?>) o).size() != size) {
+            return false;
+        }
+
+        for (int i = 0; i < size; i++) {
+            if (this.get(i) != ((ArrayDeque<?>) o).get(i)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 

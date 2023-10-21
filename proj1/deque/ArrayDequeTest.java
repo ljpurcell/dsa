@@ -145,29 +145,29 @@ public class ArrayDequeTest {
 
     @Test
     public void testEqualsMethod() {
-        ArrayDeque<String> lld1 = new ArrayDeque<>();
-        ArrayDeque<Integer> lld2 = new ArrayDeque<>();
-        ArrayDeque<String> lld3 = new ArrayDeque<>();
-        ArrayDeque<String> lld4 = new ArrayDeque<>();
+        ArrayDeque<String> deque1 = new ArrayDeque<>();
+        ArrayDeque<Integer> deque2 = new ArrayDeque<>();
+        ArrayDeque<String> deque3 = new ArrayDeque<>();
+        ArrayDeque<String> deque4 = new ArrayDeque<>();
 
-        lld1.addLast("This");
-        lld1.addLast("is");
-        lld1.addLast("the same");
+        deque1.addLast("This");
+        deque1.addLast("is");
+        deque1.addLast("the same");
 
-        lld2.addLast(1);
-        lld2.addLast(99);
+        deque2.addLast(1);
+        deque2.addLast(99);
 
-        lld3.addLast("This");
-        lld3.addLast("is");
-        lld3.addLast("the same");
+        deque3.addLast("This");
+        deque3.addLast("is");
+        deque3.addLast("the same");
 
-        lld4.addLast("Different");
-        lld4.addLast("items");
-        lld4.addLast("this");
-        lld4.addLast("time");
+        deque4.addLast("Different");
+        deque4.addLast("items");
+        deque4.addLast("this");
+        deque4.addLast("time");
 
-        assertEquals(lld1, lld3);
-        assertNotEquals(lld1, lld2);
-        assertNotEquals(lld1, lld4);
+        assertEquals(deque1, deque3);
+        assertNotEquals(deque1, deque2);
+        assertNotEquals(deque1, deque4);
     }
 }
