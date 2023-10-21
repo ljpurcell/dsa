@@ -129,7 +129,7 @@ public class LinkedListDequeTest {
         lld1.addLast("This is the one you want");
 
         String resultGet = lld1.get(3);
-        String resultGetRecursive = lld1.get(3);
+        String resultGetRecursive = lld1.getRecursive(3);
 
         String resultGetNoElement = lld1.get(400);
         String resultGetRecursiveNoElement = lld1.getRecursive(400);
