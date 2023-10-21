@@ -170,4 +170,41 @@ public class ArrayDequeTest {
         assertNotEquals(deque1, deque2);
         assertNotEquals(deque1, deque4);
     }
+
+    @Test
+    public void fillUpEmptyAndFillUpAgainTest() {
+        ArrayDeque<Integer> emptyDeque = new ArrayDeque<>();
+        ArrayDeque<Integer> firstEightDeque = new ArrayDeque<>();
+        ArrayDeque<Integer> revFirstEightDeque = new ArrayDeque<>();
+        ArrayDeque<Integer> testDeque = new ArrayDeque<>();
+        ArrayDeque<Integer> revTestDeque = new ArrayDeque<>();
+
+        assertEquals(emptyDeque, testDeque);
+
+        for (int i = 0; i < 8; i++) {
+           testDeque.addLast(i);
+           firstEightDeque.addLast(i);
+           revFirstEightDeque.addFirst(i);
+           revTestDeque.addFirst(i);
+        }
+
+        assertEquals(firstEightDeque, testDeque);
+        assertEquals(revFirstEightDeque, revTestDeque);
+
+        while (!testDeque.isEmpty()) {
+            testDeque.removeLast();
+            revTestDeque.removeFirst();
+        }
+
+        assertEquals(emptyDeque, testDeque);
+        assertEquals(emptyDeque, revTestDeque);
+
+        for (int i = 0; i < 8; i++) {
+            testDeque.addFirst(i);
+            revTestDeque.addLast(i);
+        }
+
+        assertEquals(firstEightDeque, revTestDeque);
+        assertEquals(revFirstEightDeque, testDeque);
+    }
 }

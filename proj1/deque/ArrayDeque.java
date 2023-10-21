@@ -25,13 +25,13 @@ public class ArrayDeque<T> {
 
     // TODO need to handle case where reaching end of array
     public void addFirst(T item) {
+        items[nextFirst % capacity] = item;
+        nextFirst = (capacity + (nextFirst - 1)) % capacity;
+        size += 1;
+
         if ((double) size / capacity > LFACTOR_UPPER) {
             increaseCapacity();
         }
-
-        items[nextFirst % capacity] = item;
-        nextFirst = (nextFirst - 1) % capacity;
-        size += 1;
     }
 
     // TODO need to handle case where reaching end of array
@@ -64,7 +64,6 @@ public class ArrayDeque<T> {
         }
     }
 
-    // TODO need to handle case where reaching end of array
     public T removeLast() {
         if (isEmpty()) {
             return null;
