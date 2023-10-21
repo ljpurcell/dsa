@@ -134,8 +134,12 @@ public class ArrayDequeTest {
         String resultGetAfterWrap = deque.get(4);
         String resultGetNoElement = deque.get(400);
 
-        assertEquals("This is the first you want", resultGet);
+        deque.removeLast();
+        String resultResultGetAfterWrapRemoval = deque.get(3);
+
+        assertEquals("This is the first one you want", resultGet);
         assertEquals("This is the second one you want", resultGetAfterWrap);
+        assertEquals("This is the first one you want", resultResultGetAfterWrapRemoval);
         assertNull("GET method should have returned null", resultGetNoElement);
     }
 

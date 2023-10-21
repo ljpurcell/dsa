@@ -30,7 +30,7 @@ public class ArrayDeque<T> {
         }
 
         items[nextFirst % capacity] = item;
-        nextFirst = nextFirst - 1 % capacity;
+        nextFirst = (nextFirst - 1) % capacity;
         size += 1;
     }
 
@@ -44,10 +44,10 @@ public class ArrayDeque<T> {
             decreaseCapacity();
         }
 
-        T item = items[nextFirst + 1 % capacity];
-        items[nextFirst + 1 % capacity] = null;
+        T item = items[(nextFirst + 1) % capacity];
+        items[(nextFirst + 1) % capacity] = null;
         size -= 1;
-        nextFirst = nextFirst - 1 % capacity;
+        nextFirst = (nextFirst - 1) % capacity;
         return item;
     }
 
@@ -57,7 +57,7 @@ public class ArrayDeque<T> {
             increaseCapacity();
         }
         items[nextLast % capacity] = item;
-        nextLast =  nextLast + 1 % capacity;
+        nextLast =  (nextLast + 1) % capacity;
         size += 1;
     }
 
@@ -70,8 +70,8 @@ public class ArrayDeque<T> {
         if ((double) size / capacity < LFACTOR_LOWER) {
             decreaseCapacity();
         }
-        T item = items[nextLast - 1 % capacity];
-        items[nextLast - 1 % capacity] = null;
+        T item = items[(nextLast - 1) % capacity];
+        items[(nextLast - 1) % capacity] = null;
         size -= 1;
         return item;
     }
@@ -105,7 +105,7 @@ public class ArrayDeque<T> {
 
          */
 
-        return nextFirst + 1 + index % capacity; // TODO doesn't wrap when first has gone past the zeroth index
+        return (nextFirst + 1 + index) % capacity; // TODO doesn't wrap when first has gone past the zeroth index
     }
 
     // TODO
