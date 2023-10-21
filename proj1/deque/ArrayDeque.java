@@ -40,25 +40,28 @@ public class ArrayDeque<T> {
             return null;
         }
 
+        int indexOfItem = (nextFirst + 1) % capacity;
+        T item = items[indexOfItem];
+        items[indexOfItem] = null;
+        size -= 1;
+        nextFirst = indexOfItem;
+
         if ((double) size / capacity < LFACTOR_LOWER) {
             decreaseCapacity();
         }
 
-        T item = items[(nextFirst + 1) % capacity];
-        items[(nextFirst + 1) % capacity] = null;
-        size -= 1;
-        nextFirst = (nextFirst - 1) % capacity;
         return item;
     }
 
     // TODO need to handle case where reaching end of array
     public void addLast(T item) {
+        items[nextLast] = item;
+        nextLast = (nextLast + 1) % capacity;
+        size += 1;
+
         if ((double) size / capacity > LFACTOR_UPPER) {
             increaseCapacity();
         }
-        items[nextLast % capacity] = item;
-        nextLast =  (nextLast + 1) % capacity;
-        size += 1;
     }
 
     // TODO need to handle case where reaching end of array
@@ -67,12 +70,15 @@ public class ArrayDeque<T> {
             return null;
         }
 
-        if ((double) size / capacity < LFACTOR_LOWER) {
-            decreaseCapacity();
-        }
         T item = items[(nextLast - 1) % capacity];
         items[(nextLast - 1) % capacity] = null;
         size -= 1;
+        nextLast = (nextLast - 1) % capacity;
+
+        if ((double) size / capacity < LFACTOR_LOWER) {
+            decreaseCapacity();
+        }
+
         return item;
     }
 
@@ -96,7 +102,7 @@ public class ArrayDeque<T> {
 
     private int getUnderlyingIndex(int index) {
         if (index < 0 || index > size - 1) {
-            return  -1;
+            return -1;
         }
 
         /*
@@ -105,7 +111,7 @@ public class ArrayDeque<T> {
 
          */
 
-        return (nextFirst + 1 + index) % capacity; // TODO doesn't wrap when first has gone past the zeroth index
+        return (nextFirst + 1 + index) % capacity;
     }
 
     // TODO
@@ -120,19 +126,43 @@ public class ArrayDeque<T> {
 
     // TODO: NAIVE - centre items in larger array
     private void increaseCapacity() {
-        capacity = capacity * 2;
-        T[] larger = (T[]) new Object[capacity];
-        System.arraycopy(items, 0, larger, 0, size);
+        int newCapacity = capacity * 2;
+        T[] larger = (T[]) new Object[newCapacity];
+
+        /* arraycopy with wrap
+         * start = (nextFirst + 1) % capacity
+         * copy size elements
+         * start =
+         */
+
+        copyIntoNewArray(larger);
+
         items = larger;
+        capacity = newCapacity;
+        nextFirst = capacity - 1;
+        nextLast = size;
     }
 
     // TODO: NAIVE - centre items in larger array
     private void decreaseCapacity() {
         if (capacity > MIN_CAPACITY) {
-            capacity = capacity / 2;
-            T[] smaller = (T[]) new Object[capacity];
-            System.arraycopy(items, 0, smaller, 0, size);
+            int newCapacity = capacity / 2;
+            T[] smaller = (T[]) new Object[newCapacity];
+
+            copyIntoNewArray(smaller);
+
             items = smaller;
+            capacity = newCapacity;
+            nextFirst = capacity - 1;
+            nextLast = size;
+        }
+    }
+
+    private void copyIntoNewArray(T[] newArray) {
+        int indexToCopy = nextFirst + 1;
+        for (int i = 0; i < size; i++) {
+            indexToCopy = (nextFirst + 1 + i) % capacity;
+            newArray[i] = items[indexToCopy];
         }
     }
 }
