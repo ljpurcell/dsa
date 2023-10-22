@@ -40,25 +40,21 @@ public class TestBuggyAList {
                 int randVal = StdRandom.uniform(0, 100);
                 correct.addLast(randVal);
                 buggy.addLast(randVal);
-                System.out.println("addLast(" + randVal + ")");
             } else if (operationNumber == 1) {
                 // size
                 int correctSize = correct.size();
                 int buggySize = buggy.size();
-                System.out.println("Correct size: " + correctSize + ". Buggy size: " + buggySize);
                 assertEquals(correctSize, buggySize);
             } else if (correct.size() > 0) {
                 if (operationNumber == 2) {
                     // getLast
                     int correctLast = correct.getLast();
                     int buggyLast = buggy.getLast();
-                    System.out.println("Correct last: " + correctLast + ". Buggy last: " + buggyLast);
                     assertEquals(correctLast, buggyLast);
                 } else if (operationNumber == 3) {
                     // removeLast
                     int correctLast = correct.removeLast();
                     int buggyLast = buggy.removeLast();
-                    System.out.println("Correct removeLast: " + correctLast + ". Buggy removeLast: " + buggyLast);
                     assertEquals(correctLast, buggyLast);
                 }
             }
