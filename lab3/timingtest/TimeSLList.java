@@ -28,7 +28,7 @@ public class TimeSLList {
         AList<Integer> opCount = new AList<>();
         int M = 1000;
 
-        for (int n = 1000; n <= 41000; n += 10000) {
+        for (int n = 1000; n <= 256000; n *= 2) {
 
             SLList<Integer> test = new SLList<>();
 
