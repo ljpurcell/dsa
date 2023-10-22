@@ -29,29 +29,37 @@ public class TestBuggyAList {
 
     @Test
     public void randomizedTest() {
-        AListNoResizing<Integer> L = new AListNoResizing<>();
+        AListNoResizing<Integer> correct = new AListNoResizing<>();
+        BuggyAList<Integer> buggy = new BuggyAList<>();
 
-        int N = 500;
+        int N = 5000;
         for (int i = 0; i < N; i += 1) {
             int operationNumber = StdRandom.uniform(0, 4);
             if (operationNumber == 0) {
                 // addLast
                 int randVal = StdRandom.uniform(0, 100);
-                L.addLast(randVal);
+                correct.addLast(randVal);
+                buggy.addLast(randVal);
                 System.out.println("addLast(" + randVal + ")");
             } else if (operationNumber == 1) {
                 // size
-                int size = L.size();
-                System.out.println("size: " + size);
-            } else if (L.size() > 0) {
+                int correctSize = correct.size();
+                int buggySize = buggy.size();
+                System.out.println("Correct size: " + correctSize + ". Buggy size: " + buggySize);
+                assertEquals(correctSize, buggySize);
+            } else if (correct.size() > 0) {
                 if (operationNumber == 2) {
                     // getLast
-                    int last = L.getLast();
-                    System.out.println("last: " + last);
+                    int correctLast = correct.getLast();
+                    int buggyLast = buggy.getLast();
+                    System.out.println("Correct last: " + correctLast + ". Buggy last: " + buggyLast);
+                    assertEquals(correctLast, buggyLast);
                 } else if (operationNumber == 3) {
                     // removeLast
-                    int last = L.removeLast();
-                    System.out.println("removeLast: " + last);
+                    int correctLast = correct.removeLast();
+                    int buggyLast = buggy.removeLast();
+                    System.out.println("Correct removeLast: " + correctLast + ". Buggy removeLast: " + buggyLast);
+                    assertEquals(correctLast, buggyLast);
                 }
             }
         }
