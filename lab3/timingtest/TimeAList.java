@@ -27,7 +27,7 @@ public class TimeAList {
         AList<Double> times = new AList<>();
         AList<Integer> opCount = new AList<>();
 
-        for (int ops = 1000; ops <= 128000; ops *= 2) {
+        for (int ops = 1000; ops <= 64000; ops *= 2) {
 
             Stopwatch sw = new Stopwatch();
             AList<Integer> test = new AList<>();
