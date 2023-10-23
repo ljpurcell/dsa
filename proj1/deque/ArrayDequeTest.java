@@ -1,5 +1,6 @@
 package deque;
 
+import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -25,7 +26,7 @@ public class ArrayDequeTest {
         // The && operator is the same as "and" in Python.
         // It's a binary operator that returns true if both arguments true, and false otherwise.
         assertEquals(1, deque.size());
-        assertFalse("lld1 should now contain 1 item", deque.isEmpty());
+        assertFalse("deque should now contain 1 item", deque.isEmpty());
 
         deque.addLast(42);
         assertEquals(2, deque.size());
@@ -38,33 +39,33 @@ public class ArrayDequeTest {
     /** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
     public void addRemoveTest() {
 
-        ArrayDeque<Integer> lld1 = new ArrayDeque<>();
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
 
         // should be empty
-        assertTrue("lld1 should be empty upon initialization", lld1.isEmpty());
+        assertTrue("deque should be empty upon initialization", deque.isEmpty());
 
-        lld1.addFirst(10);
+        deque.addFirst(10);
         // should not be empty
-        assertFalse("lld1 should contain 1 item", lld1.isEmpty());
+        assertFalse("deque should contain 1 item", deque.isEmpty());
 
-        lld1.removeFirst();
+        deque.removeFirst();
         // should be empty
-        assertTrue("lld1 should be empty after removal", lld1.isEmpty());
+        assertTrue("deque should be empty after removal", deque.isEmpty());
     }
 
     @Test
     /* Tests removing from an empty deque */
     public void removeEmptyTest() {
 
-        ArrayDeque<Integer> lld1 = new ArrayDeque<>();
-        lld1.addFirst(3);
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        deque.addFirst(3);
 
-        lld1.removeLast();
-        lld1.removeFirst();
-        lld1.removeLast();
-        lld1.removeFirst();
+        deque.removeLast();
+        deque.removeFirst();
+        deque.removeLast();
+        deque.removeFirst();
 
-        int size = lld1.size();
+        int size = deque.size();
         String errorMsg = "  Bad size returned when removing from empty deque.\n";
         errorMsg += "  student size() returned " + size + "\n";
         errorMsg += "  actual size() returned 0\n";
@@ -206,5 +207,41 @@ public class ArrayDequeTest {
 
         assertEquals(firstEightDeque, revTestDeque);
         assertEquals(revFirstEightDeque, testDeque);
+    }
+
+    @Test
+    public void testThreeAddThreeRemove() {
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+
+        for (int i = 0; i < 3; i++) {
+            deque.addLast(i);
+        }
+
+        assertEquals(3, deque.size());
+
+        assertEquals(Integer.valueOf(2), deque.removeLast());
+        assertEquals(Integer.valueOf(1), deque.removeLast());
+        assertEquals(Integer.valueOf(0), deque.removeLast());
+    }
+
+    @Test
+    public void randomizedTest() {
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+
+        int N = 5000;
+        int sizeOfDeque = 0;
+        for (int i = 0; i < N; i += 1) {
+            int operationNumber = StdRandom.uniform(0, 4);
+            if (operationNumber == 0) {
+                // addLast
+                int randVal = StdRandom.uniform(0, 100);
+                deque.addLast(randVal);
+                sizeOfDeque += 1;
+            } else if (operationNumber == 1) {
+                // size
+                int dequeSize = deque.size();
+                assertEquals(sizeOfDeque, dequeSize);
+            }
+        }
     }
 }

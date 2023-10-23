@@ -92,6 +92,14 @@ public class ArrayDeque<T> {
 
 
     public void printDeque() {
+        int indexToPrint;
+        for (int i = 0; i < size; i++) {
+            indexToPrint = (nextFirst + 1 + i) % capacity;
+            System.out.print(items[indexToPrint] + " ");
+        }
+
+        // TODO imperfect solution for last element
+
     }
 
     public T get(int index) {
@@ -168,7 +176,7 @@ public class ArrayDeque<T> {
     }
 
     private void copyIntoNewArray(T[] newArray) {
-        int indexToCopy = nextFirst + 1;
+        int indexToCopy;
         for (int i = 0; i < size; i++) {
             indexToCopy = (nextFirst + 1 + i) % capacity;
             newArray[i] = items[indexToCopy];
