@@ -109,7 +109,6 @@ public class LinkedListDeque<T> implements Deque<T> {
         return getElementNAway(o.next, off - 1);
     }
 
-
     // TODO
     public Iterator<T> iterator() {
         return null;

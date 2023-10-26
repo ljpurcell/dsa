@@ -15,7 +15,6 @@ public class ArrayDeque<T> implements Deque<T> {
     private int nextLast;
 
     public ArrayDeque() {
-        // TODO probably using % capacity inefficiently
         size = 0;
         capacity = MIN_CAPACITY;
         nextFirst = 3;
@@ -23,7 +22,6 @@ public class ArrayDeque<T> implements Deque<T> {
         items = (T[]) new Object[capacity];
     }
 
-    // TODO need to handle case where reaching end of array
     public void addFirst(T item) {
         items[nextFirst % capacity] = item;
         nextFirst = (capacity + (nextFirst - 1)) % capacity;
@@ -34,7 +32,6 @@ public class ArrayDeque<T> implements Deque<T> {
         }
     }
 
-    // TODO need to handle case where reaching end of array
     public T removeFirst() {
         if (isEmpty()) {
             return null;
@@ -53,7 +50,6 @@ public class ArrayDeque<T> implements Deque<T> {
         return item;
     }
 
-    // TODO need to handle case where reaching end of array
     public void addLast(T item) {
         items[nextLast] = item;
         nextLast = (nextLast + 1) % capacity;
@@ -94,8 +90,7 @@ public class ArrayDeque<T> implements Deque<T> {
             System.out.print(items[indexToPrint] + " ");
         }
 
-        // TODO imperfect solution for last element
-
+        System.out.println();
     }
 
     public T get(int index) {
@@ -136,17 +131,9 @@ public class ArrayDeque<T> implements Deque<T> {
         return true;
     }
 
-
-    // TODO: NAIVE - centre items in larger array
     private void increaseCapacity() {
         int newCapacity = capacity * 2;
         T[] larger = (T[]) new Object[newCapacity];
-
-        /* arraycopy with wrap
-         * start = (nextFirst + 1) % capacity
-         * copy size elements
-         * start =
-         */
 
         copyIntoNewArray(larger);
 
@@ -156,7 +143,6 @@ public class ArrayDeque<T> implements Deque<T> {
         nextLast = size;
     }
 
-    // TODO: NAIVE - centre items in larger array
     private void decreaseCapacity() {
         if (capacity > MIN_CAPACITY) {
             int newCapacity = capacity / 2;
