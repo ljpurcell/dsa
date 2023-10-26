@@ -2,7 +2,7 @@ package deque;
 
 import java.util.Iterator;
 
-public class ArrayDeque<T> {
+public class ArrayDeque<T> implements Deque<T> {
 
     private final double LFACTOR_UPPER = 0.75;
     private final double LFACTOR_LOWER = 0.25;
@@ -79,10 +79,6 @@ public class ArrayDeque<T> {
         }
 
         return item;
-    }
-
-    public boolean isEmpty() {
-        return size == 0;
     }
 
     // constant time

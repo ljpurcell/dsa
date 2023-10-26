@@ -2,7 +2,7 @@ package deque;
 
 import java.util.Iterator;
 
-public class LinkedListDeque<T> {
+public class LinkedListDeque<T> implements Deque<T> {
     private class ListNode {
         ListNode previous;
         T item;
@@ -63,10 +63,6 @@ public class LinkedListDeque<T> {
             size -= 1;
         }
         return item;
-    }
-
-    public boolean isEmpty() {
-        return size == 0;
     }
 
     // constant time
