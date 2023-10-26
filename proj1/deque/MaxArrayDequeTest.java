@@ -14,11 +14,31 @@ import static org.junit.Assert.*;
 public class MaxArrayDequeTest {
 
     @Test
+    public void isEmptyTest() {
+
+        Comparator<Integer> ic = MaxArrayDequeComparators.getIntegerComparator();
+
+        MaxArrayDeque<Integer> deque = new MaxArrayDeque<>(ic);
+
+        assertTrue(deque.isEmpty());
+
+        deque.addFirst(1);
+
+        assertFalse(deque.isEmpty());
+
+        deque.removeFirst();
+        deque.removeLast();
+        deque.removeFirst();
+
+        assertTrue(deque.isEmpty());
+    }
+
+    @Test
     /** Adds a few things to the list, checking isEmpty() and size() are correct,
      * finally printing the results.
      *
      * && is the "and" operation. */
-    public void addIsEmptySizeTest() {
+    public void sizeTest() {
 
         Comparator<Integer> ic = MaxArrayDequeComparators.getIntegerComparator();
 

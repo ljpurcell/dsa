@@ -39,7 +39,7 @@ public class ArrayDequeTest {
     /** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
     public void addRemoveTest() {
 
-        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        ArrayDeque<Integer> deque = new ArrayDeque<Integer>();
 
         // should be empty
         assertTrue("deque should be empty upon initialization", deque.isEmpty());
@@ -57,7 +57,7 @@ public class ArrayDequeTest {
     /* Tests removing from an empty deque */
     public void removeEmptyTest() {
 
-        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        ArrayDeque<Integer> deque = new ArrayDeque<Integer>();
         deque.addFirst(3);
 
         deque.removeLast();
@@ -122,7 +122,7 @@ public class ArrayDequeTest {
 
     @Test
     public void testGetMethods() {
-        ArrayDeque<String> deque = new ArrayDeque<>();
+        ArrayDeque<String> deque = new ArrayDeque<String>();
         deque.addLast("This is item ONE");
         deque.addLast("Item two");
         deque.addLast("Item three");
@@ -146,10 +146,10 @@ public class ArrayDequeTest {
 
     @Test
     public void testEqualsMethod() {
-        ArrayDeque<String> deque1 = new ArrayDeque<>();
-        ArrayDeque<Integer> deque2 = new ArrayDeque<>();
-        ArrayDeque<String> deque3 = new ArrayDeque<>();
-        ArrayDeque<String> deque4 = new ArrayDeque<>();
+        ArrayDeque<String> deque1 = new ArrayDeque<String>();
+        ArrayDeque<Integer> deque2 = new ArrayDeque<Integer>();
+        ArrayDeque<String> deque3 = new ArrayDeque<String>();
+        ArrayDeque<String> deque4 = new ArrayDeque<String>();
 
         deque1.addLast("This");
         deque1.addLast("is");
@@ -174,11 +174,11 @@ public class ArrayDequeTest {
 
     @Test
     public void fillUpEmptyAndFillUpAgainTest() {
-        ArrayDeque<Integer> emptyDeque = new ArrayDeque<>();
-        ArrayDeque<Integer> firstEightDeque = new ArrayDeque<>();
-        ArrayDeque<Integer> revFirstEightDeque = new ArrayDeque<>();
-        ArrayDeque<Integer> testDeque = new ArrayDeque<>();
-        ArrayDeque<Integer> revTestDeque = new ArrayDeque<>();
+        ArrayDeque<Integer> emptyDeque = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> firstEightDeque = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> revFirstEightDeque = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> testDeque = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> revTestDeque = new ArrayDeque<Integer>();
 
         assertEquals(emptyDeque, testDeque);
 
@@ -211,7 +211,7 @@ public class ArrayDequeTest {
 
     @Test
     public void testThreeAddThreeRemove() {
-        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        ArrayDeque<Integer> deque = new ArrayDeque<Integer>();
 
         for (int i = 0; i < 3; i++) {
             deque.addLast(i);
@@ -226,7 +226,7 @@ public class ArrayDequeTest {
 
     @Test
     public void randomizedTest() {
-        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        ArrayDeque<Integer> deque = new ArrayDeque<Integer>();
 
         int N = 5000;
         int sizeOfDeque = 0;

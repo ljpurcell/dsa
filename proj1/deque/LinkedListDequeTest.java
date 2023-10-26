@@ -18,7 +18,7 @@ public class LinkedListDequeTest {
      * && is the "and" operation. */
     public void addIsEmptySizeTest() {
 
-        LinkedListDeque<Integer> deque1 = new LinkedListDeque<>();
+        LinkedListDeque<Integer> deque1 = new LinkedListDeque<Integer>();
 
         assertTrue("A newly initialized LLDeque should be empty", deque1.isEmpty());
         deque1.addFirst(23);
@@ -39,7 +39,7 @@ public class LinkedListDequeTest {
     /** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
     public void addRemoveTest() {
 
-        LinkedListDeque<Integer> deque1 = new LinkedListDeque<>();
+        LinkedListDeque<Integer> deque1 = new LinkedListDeque<Integer>();
 
         // should be empty
         assertTrue("deque1 should be empty upon initialization", deque1.isEmpty());
@@ -57,7 +57,7 @@ public class LinkedListDequeTest {
     /* Tests removing from an empty deque */
     public void removeEmptyTest() {
 
-        LinkedListDeque<Integer> deque1 = new LinkedListDeque<>();
+        LinkedListDeque<Integer> deque1 = new LinkedListDeque<Integer>();
         deque1.addFirst(3);
 
         deque1.removeLast();
@@ -122,7 +122,7 @@ public class LinkedListDequeTest {
 
     @Test
     public void testGetMethods() {
-        LinkedListDeque<String> deque1 = new LinkedListDeque<>();
+        LinkedListDeque<String> deque1 = new LinkedListDeque<String>();
         deque1.addFirst("This is item ONE");
         deque1.addLast("Item two");
         deque1.addLast("Item three");
@@ -170,11 +170,11 @@ public class LinkedListDequeTest {
 
     @Test
     public void fillUpEmptyAndFillUpAgainTest() {
-        LinkedListDeque<Integer> emptyDeque = new LinkedListDeque<>();
-        LinkedListDeque<Integer> firstEightDeque = new LinkedListDeque<>();
-        LinkedListDeque<Integer> revFirstEightDeque = new LinkedListDeque<>();
-        LinkedListDeque<Integer> testDeque = new LinkedListDeque<>();
-        LinkedListDeque<Integer> revTestDeque = new LinkedListDeque<>();
+        LinkedListDeque<Integer> emptyDeque = new LinkedListDeque<Integer>();
+        LinkedListDeque<Integer> firstEightDeque = new LinkedListDeque<Integer>();
+        LinkedListDeque<Integer> revFirstEightDeque = new LinkedListDeque<Integer>();
+        LinkedListDeque<Integer> testDeque = new LinkedListDeque<Integer>();
+        LinkedListDeque<Integer> revTestDeque = new LinkedListDeque<Integer>();
 
         assertEquals(emptyDeque, testDeque);
 
@@ -207,7 +207,7 @@ public class LinkedListDequeTest {
 
     @Test
     public void testThreeAddThreeRemove() {
-        LinkedListDeque<Integer> deque = new LinkedListDeque<>();
+        LinkedListDeque<Integer> deque = new LinkedListDeque<Integer>();
 
         for (int i = 0; i < 3; i++) {
             deque.addLast(i);
@@ -222,7 +222,7 @@ public class LinkedListDequeTest {
 
     @Test
     public void randomizedTest() {
-        LinkedListDeque<Integer> deque = new LinkedListDeque<>();
+        LinkedListDeque<Integer> deque = new LinkedListDeque<Integer>();
 
         int N = 5000;
         int sizeOfDeque = 0;
