@@ -3,6 +3,23 @@ package deque;
 import java.util.Iterator;
 
 public class ArrayDeque<T> implements Deque<T> {
+    private class ArrayDequeIterator implements Iterator<T> {
+        int currentIndex = nextFirst - 1;
+
+        public boolean hasNext() {
+            if (isEmpty()) {
+                return false;
+            }
+
+            return ((currentIndex + 1) % capacity) != nextLast;
+        }
+
+        public T next() {
+            T returnItem = items[currentIndex % capacity];
+            currentIndex = (currentIndex + 1) % capacity;
+            return returnItem;
+        }
+    }
 
     private final double LFACTOR_UPPER = 0.75;
     private final double LFACTOR_LOWER = 0.25;
@@ -77,7 +94,6 @@ public class ArrayDeque<T> implements Deque<T> {
         return item;
     }
 
-    // constant time
     public int size() {
         return size;
     }
@@ -103,17 +119,11 @@ public class ArrayDeque<T> implements Deque<T> {
             return -1;
         }
 
-        /*
-        user interface  {1, 2, 3, 4} -> underlying {0, 0, 0, 1, 2, 3, 4, 0}
-        0 = start -> nextFirst + 1
-
-         */
-
         return (nextFirst + 1 + index) % capacity;
     }
 
     public Iterator<T> iterator() {
-        return null;
+        return new ArrayDequeIterator();
     }
 
     public boolean equals(Object o) {
