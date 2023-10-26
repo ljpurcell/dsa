@@ -15,8 +15,22 @@ public class LinkedListDeque<T> implements Deque<T> {
         }
     }
 
-    ListNode sentinel;
-    int size;
+    private class LinkedListIterator implements Iterator<T> {
+        ListNode currentNode = sentinel.next;
+
+        public boolean hasNext() {
+            return currentNode.next != sentinel;
+        }
+
+       public T next() {
+            T returnItem = currentNode.item;
+            currentNode = currentNode.next;
+            return returnItem;
+       }
+    }
+
+    private final ListNode sentinel;
+    private int size;
 
     public LinkedListDeque() {
         sentinel = new ListNode(null, null, null);
@@ -25,14 +39,12 @@ public class LinkedListDeque<T> implements Deque<T> {
         size = 0;
     }
 
-    // must be constant time
     public void addFirst(T item) {
         sentinel.next = new ListNode(sentinel, item, sentinel.next);
         sentinel.next.next.previous = sentinel.next;
         size += 1;
     }
 
-    // must be constant time
     public T removeFirst() {
         T item = null;
         if (sentinel.next != sentinel) {
@@ -109,9 +121,8 @@ public class LinkedListDeque<T> implements Deque<T> {
         return getElementNAway(o.next, off - 1);
     }
 
-    // TODO
     public Iterator<T> iterator() {
-        return null;
+        return new LinkedListIterator();
     }
 
     public boolean equals(Object o) {

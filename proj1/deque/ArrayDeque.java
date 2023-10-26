@@ -112,7 +112,6 @@ public class ArrayDeque<T> implements Deque<T> {
         return (nextFirst + 1 + index) % capacity;
     }
 
-    // TODO
     public Iterator<T> iterator() {
         return null;
     }
