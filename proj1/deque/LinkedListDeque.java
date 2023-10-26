@@ -22,11 +22,11 @@ public class LinkedListDeque<T> implements Deque<T> {
             return currentNode.next != sentinel;
         }
 
-       public T next() {
+        public T next() {
             T returnItem = currentNode.item;
             currentNode = currentNode.next;
             return returnItem;
-       }
+        }
     }
 
     private final ListNode sentinel;
@@ -126,12 +126,12 @@ public class LinkedListDeque<T> implements Deque<T> {
     }
 
     public boolean equals(Object o) {
-        if (!(o instanceof LinkedListDeque) || ((LinkedListDeque<?>) o).size() != size) {
+        if (((Deque<Object>) o).size() != size) {
             return false;
         }
 
         for (int i = 0; i < size; i++) {
-            if (!this.get(i).equals(((LinkedListDeque<?>) o).get(i))) {
+            if (!this.get(i).equals(((Deque<Object>) o).get(i))) {
                 return false;
             }
         }

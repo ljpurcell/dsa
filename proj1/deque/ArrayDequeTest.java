@@ -244,4 +244,20 @@ public class ArrayDequeTest {
             }
         }
     }
+
+    @Test
+    public void isEqualToLinkedListDequeWithSameElementsTest() {
+        ArrayDeque<Boolean> arrayDeque = new ArrayDeque<Boolean>();
+        LinkedListDeque<Boolean> linkedListDeque = new LinkedListDeque<Boolean>();
+
+        arrayDeque.addLast(true);
+        arrayDeque.addLast(false);
+        arrayDeque.addLast(true);
+
+        linkedListDeque.addLast(true);
+        linkedListDeque.addLast(false);
+        linkedListDeque.addLast(true);
+
+        assertEquals(arrayDeque, linkedListDeque);
+    }
 }
