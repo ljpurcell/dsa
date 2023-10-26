@@ -8,7 +8,7 @@ public class LinkedListDeque<T> implements Deque<T> {
         T item;
         ListNode next;
 
-        public ListNode(ListNode p, T i, ListNode n) {
+        ListNode(ListNode p, T i, ListNode n) {
             previous = p;
             item = i;
             next = n;

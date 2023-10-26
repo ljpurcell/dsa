@@ -8,8 +8,8 @@ public class MaxArrayDeque<T> extends ArrayDeque<T> {
     private final Comparator<T> comparator;
 
     public MaxArrayDeque(Comparator<T> c) {
-       comparator = c;
-       maxValue = this.max();
+        comparator = c;
+        maxValue = this.max();
     }
 
     public T max() {
