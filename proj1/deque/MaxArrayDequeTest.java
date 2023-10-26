@@ -39,7 +39,7 @@ public class MaxArrayDequeTest {
 
     @Test
     /** Checks the MaxArrayDeque returns the maximum value correctly */
-    public void getMaxTest() {
+    public void getMaxTestInteger() {
 
         Comparator<Integer> ic = MaxArrayDequeComparators.getIntegerComparator();
         MaxArrayDeque<Integer> deque = new MaxArrayDeque<>(ic);
@@ -51,5 +51,49 @@ public class MaxArrayDequeTest {
 
         int max = deque.max();
         assertEquals(119, max);
+    }
+
+    @Test
+    /** Checks the MaxArrayDeque returns the maximum value correctly */
+    public void getMaxTestString() {
+
+        Comparator<String> stringComparator = MaxArrayDequeComparators.getStringComparator();
+        MaxArrayDeque<String> deque = new MaxArrayDeque<>(stringComparator);
+
+        deque.addFirst("a");
+        deque.addFirst("carnival");
+        deque.addFirst("zebra");
+
+        String max = deque.max();
+        assertEquals("zebra", max);
+    }
+
+
+    @Test
+    /** Checks the MaxArrayDeque returns the maximum value correctly */
+    public void getMaxTestIfDequeEmpty() {
+
+        Comparator<Integer> ic = MaxArrayDequeComparators.getIntegerComparator();
+        MaxArrayDeque<Integer> deque = new MaxArrayDeque<>(ic);
+
+        assertNull(deque.max());
+    }
+
+    @Test
+    /** Checks the MaxArrayDeque returns the maximum value correctly */
+    public void getMaxTestIfDequeEmptyThenFilled() {
+
+        Comparator<Integer> ic = MaxArrayDequeComparators.getIntegerComparator();
+        MaxArrayDeque<Integer> deque = new MaxArrayDeque<>(ic);
+
+        assertNull(deque.max());
+
+        deque.addFirst(1);
+        deque.addFirst(15);
+        deque.addLast(1);
+        deque.addLast(1199);
+
+        int max = deque.max();
+        assertEquals(1199, max);
     }
 }
