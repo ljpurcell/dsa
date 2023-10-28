@@ -256,4 +256,19 @@ public class LinkedListDequeTest {
 
         assertEquals(linkedListDeque, arrayDeque);
     }
+
+    @Test
+    public void iteratorTest() {
+
+        LinkedListDeque<Boolean> deque = new LinkedListDeque<>();
+        deque.addLast(true);
+        deque.addLast(false);
+        deque.addLast(true);
+        deque.addLast(false);
+        deque.addLast(true);
+
+        for (boolean item : deque) {
+            System.out.println(item);
+        }
+    }
 }
