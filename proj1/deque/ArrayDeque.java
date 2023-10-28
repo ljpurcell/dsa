@@ -82,8 +82,9 @@ public class ArrayDeque<T> implements Deque<T> {
             return null;
         }
 
-        T item = items[(nextLast - 1) % capacity];
-        items[(nextLast - 1) % capacity] = null;
+        int indexToRemove = (capacity + (nextLast - 1)) % capacity;
+        T item = items[indexToRemove];
+        items[indexToRemove] = null;
         size -= 1;
         nextLast = (nextLast - 1) % capacity;
 
