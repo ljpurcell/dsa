@@ -228,7 +228,7 @@ public class ArrayDequeTest {
     public void randomizedTest() {
         ArrayDeque<Integer> deque = new ArrayDeque<Integer>();
 
-        int N = 5000;
+        int N = 50000;
         int sizeOfDeque = 0;
         for (int i = 0; i < N; i += 1) {
             int operationNumber = StdRandom.uniform(0, 4);
@@ -241,6 +241,9 @@ public class ArrayDequeTest {
                 // size
                 int dequeSize = deque.size();
                 assertEquals(sizeOfDeque, dequeSize);
+            } else if (operationNumber == 2) {
+                assertEquals(deque.get(deque.size() - 1), deque.removeLast());
+                sizeOfDeque = sizeOfDeque >= 1 ? sizeOfDeque - 1 : sizeOfDeque;
             }
         }
     }
