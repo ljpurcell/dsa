@@ -30,7 +30,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
                 return returnItem;
             }
 
-            throw new NoSuchElementException("No such element for iterator.next call on linked list deque");
+            throw new NoSuchElementException("No next element in linked list deque");
         }
     }
 

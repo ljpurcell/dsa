@@ -12,7 +12,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
                 return false;
             }
 
-            return wrapIndex(currentIndex + 1) != nextLast && items[wrapIndex(currentIndex + 1)] != null;
+            int nextIndex = currentIndex + 1;
+            return wrapIndex(nextIndex) != nextLast && items[wrapIndex(nextIndex)] != null;
         }
 
         public T next() {
@@ -22,7 +23,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
                 return returnItem;
             }
 
-            throw new NoSuchElementException("No next element exists for call on array deque iterator");
+            throw new NoSuchElementException("No next element for array deque");
         }
     }
 
