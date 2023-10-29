@@ -11,12 +11,16 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
                 return false;
             }
 
-            return ((currentIndex + 1) % capacity) != nextLast;
+            return ((capacity + (currentIndex + 1)) % capacity) != nextLast;
         }
 
         public T next() {
-            T returnItem = items[currentIndex % capacity];
-            currentIndex = (currentIndex + 1) % capacity;
+            T returnItem = null;
+            if (hasNext()) {
+                returnItem = items[currentIndex % capacity];
+                currentIndex = (currentIndex + 1) % capacity;
+            }
+
             return returnItem;
         }
     }
