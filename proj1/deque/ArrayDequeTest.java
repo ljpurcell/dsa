@@ -263,6 +263,26 @@ public class ArrayDequeTest {
 
         assertEquals(arrayDeque, linkedListDeque);
     }
+     @Test
+    public void isEqualToDequeWithSameElementsAfterResizingTest() {
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        LinkedListDeque<Integer> test = new LinkedListDeque<>();
+
+         for (int i = 0; i < 100; i++) {
+             deque.addLast(i);
+             test.addLast(i);
+         }
+
+         for (int i = 0; i < 1000; i++) {
+             test.addFirst(i);
+         }
+
+         for (int i = 0; i < 1000; i++) {
+             test.removeFirst();
+         }
+
+        assertEquals(deque, test);
+    }
 
     @Test
     public void iteratorTest() {

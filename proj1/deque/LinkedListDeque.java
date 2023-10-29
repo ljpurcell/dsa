@@ -20,13 +20,13 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         ListNode currentNode = sentinel.next;
 
         public boolean hasNext() {
-            return currentNode.next != sentinel && currentNode != sentinel;
+            return currentNode != sentinel;
         }
 
         public T next() {
-            if (hasNext()) {
-                T returnItem = currentNode.item;
-                currentNode = currentNode.next;
+            T returnItem = currentNode.item;
+            currentNode = currentNode.next;
+            if (returnItem != null) {
                 return returnItem;
             }
 

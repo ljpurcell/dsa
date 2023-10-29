@@ -17,9 +17,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
 
         public T next() {
-            if (hasNext()) {
-                T returnItem = items[wrapIndex(currentIndex)];
-                currentIndex = wrapIndex(currentIndex + 1);
+            T returnItem = items[wrapIndex(currentIndex)];
+            currentIndex = wrapIndex(currentIndex + 1);
+            if (returnItem != null) {
                 return returnItem;
             }
 
