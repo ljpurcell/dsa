@@ -1,6 +1,7 @@
 package deque;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     private class ListNode {
@@ -23,9 +24,13 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
 
         public T next() {
-            T returnItem = currentNode.item;
-            currentNode = currentNode.next;
-            return returnItem;
+            if (hasNext()) {
+                T returnItem = currentNode.item;
+                currentNode = currentNode.next;
+                return returnItem;
+            }
+
+            throw new NoSuchElementException("No such element for iterator.next call on linked list deque");
         }
     }
 

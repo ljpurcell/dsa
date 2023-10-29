@@ -1,6 +1,7 @@
 package deque;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private class ArrayDequeIterator implements Iterator<T> {
@@ -11,17 +12,17 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
                 return false;
             }
 
-            return ((capacity + (currentIndex + 1)) % capacity) != nextLast;
+            return wrapIndex(currentIndex + 1) != nextLast && items[wrapIndex(currentIndex + 1)] != null;
         }
 
         public T next() {
-            T returnItem = null;
             if (hasNext()) {
-                returnItem = items[currentIndex % capacity];
-                currentIndex = (currentIndex + 1) % capacity;
+                T returnItem = items[wrapIndex(currentIndex)];
+                currentIndex = wrapIndex(currentIndex + 1);
+                return returnItem;
             }
 
-            return returnItem;
+            throw new NoSuchElementException("No next element exists for call on array deque iterator");
         }
     }
 
@@ -44,8 +45,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public void addFirst(T item) {
-        items[nextFirst % capacity] = item;
-        nextFirst = (capacity + (nextFirst - 1)) % capacity;
+        items[wrapIndex(nextFirst)] = item;
+        nextFirst = wrapIndex(nextFirst - 1);
         size += 1;
 
         if ((double) size / capacity > LFACTOR_UPPER) {
@@ -58,7 +59,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
 
-        int indexOfItem = (nextFirst + 1) % capacity;
+        int indexOfItem = wrapIndex(nextFirst + 1);
         T item = items[indexOfItem];
         items[indexOfItem] = null;
         size -= 1;
@@ -73,7 +74,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     public void addLast(T item) {
         items[nextLast] = item;
-        nextLast = (nextLast + 1) % capacity;
+        nextLast = wrapIndex(nextLast + 1);
         size += 1;
 
         if ((double) size / capacity > LFACTOR_UPPER) {
@@ -86,11 +87,11 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
 
-        int indexToRemove = (capacity + (nextLast - 1)) % capacity;
+        int indexToRemove = wrapIndex(nextLast - 1);
         T item = items[indexToRemove];
         items[indexToRemove] = null;
         size -= 1;
-        nextLast = (nextLast - 1) % capacity;
+        nextLast = wrapIndex(nextLast - 1);
 
         if ((double) size / capacity < LFACTOR_LOWER) {
             decreaseCapacity();
@@ -174,8 +175,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private void copyIntoNewArray(T[] newArray) {
         int indexToCopy;
         for (int i = 0; i < size; i++) {
-            indexToCopy = (nextFirst + 1 + i) % capacity;
+            indexToCopy = wrapIndex(nextFirst + 1 + i);
             newArray[i] = items[indexToCopy];
         }
+    }
+
+    private int wrapIndex(int index) {
+        return (capacity + index) % capacity;
     }
 }
