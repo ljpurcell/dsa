@@ -5,20 +5,19 @@ import java.util.NoSuchElementException;
 
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private class ArrayDequeIterator implements Iterator<T> {
-        int currentIndex = nextFirst - 1;
+        int nextIndex = nextFirst + 1;
 
         public boolean hasNext() {
             if (isEmpty()) {
                 return false;
             }
 
-            int nextIndex = currentIndex + 1;
             return wrapIndex(nextIndex) != nextLast && items[wrapIndex(nextIndex)] != null;
         }
 
         public T next() {
-            T returnItem = items[wrapIndex(currentIndex)];
-            currentIndex = wrapIndex(currentIndex + 1);
+            T returnItem = items[wrapIndex(nextIndex)];
+            nextIndex = wrapIndex(nextIndex + 1);
             if (returnItem != null) {
                 return returnItem;
             }
@@ -139,7 +138,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
 
         for (int i = 0; i < size; i++) {
-            if (this.get(i) != ((Deque<Object>) o).get(i)) {
+            if (!this.get(i).equals(((Deque<Object>) o).get(i))) {
                 return false;
             }
         }
