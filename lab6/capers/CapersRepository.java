@@ -49,7 +49,14 @@ public class CapersRepository {
      * @param text String of the text to be appended to the story
      */
     public static void writeStory(String text) {
-        // TODO
+        String prior = Utils.readContentsAsString(STORY_FILE);
+        Utils.writeContents(STORY_FILE, prior, text, "\n");
+        printStory();
+    }
+
+    private static void printStory() {
+        String contents = Utils.readContentsAsString(STORY_FILE);
+        System.out.println(contents);
     }
 
     /**
