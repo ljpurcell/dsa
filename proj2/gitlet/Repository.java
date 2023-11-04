@@ -29,11 +29,7 @@ public class Repository {
             System.out.println("A Gitlet version-control system already exists in the current directory.");
         }
         else {
-            boolean repoCreated = GITLET_DIR.mkdir();
-            if (repoCreated) {
-                System.out.println("Initialised an empty Gitlet repository");
-            }
-            else {
+            if (!GITLET_DIR.mkdir()) {
                 throw new GitletException("Could not initialise Gitlet repository");
             }
         }
