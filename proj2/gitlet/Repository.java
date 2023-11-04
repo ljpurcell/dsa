@@ -1,6 +1,7 @@
 package gitlet;
 
 import java.io.File;
+import java.util.HashSet;
 
 import static gitlet.Utils.*;
 
@@ -36,11 +37,20 @@ public class Repository {
         } else if (!GITLET_DIR.mkdir()) {
             throw new GitletException("Could not initialise Gitlet repository");
         } else {
-           createInitialCommit();
+            createGitletSubFolders();
+            createInitialCommit();
         }
     }
 
-    private void createInitialCommit() {
-        Commit c = new Commit();
+    static private void createGitletSubFolders() {
+        /**
+         * Objects?
+         * Refs?
+         */
+
+    }
+
+    static private void createInitialCommit() {
+//        Commit c = new Commit();
     }
 }
