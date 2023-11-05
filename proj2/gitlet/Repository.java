@@ -61,12 +61,11 @@ public class Repository {
         refs = join(GITLET_DIR, "refs").mkdir();
 
         if (!(head && objects && refs)) {
-            throw new RuntimeException("Created: HEAD - " + head + ". objects/ - " + objects + ". refs/ - " + refs);
+            throw new GitletException("Created: HEAD - " + head + ". objects/ - " + objects + ". refs/ - " + refs);
         }
     }
 
     static private void createInitialCommit() {
-        Commit c = new Commit("Commit message", "ljpurcell");
-        System.out.println(c);
+        Commit c = new Commit("Initial commit", "ljpurcell");
     }
 }

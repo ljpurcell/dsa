@@ -1,11 +1,12 @@
 package gitlet;
 
+import java.io.Serializable;
+import java.io.File;
 import java.time.Instant;
 import java.util.Date;
 
-import static gitlet.Utils.join;
-import static gitlet.Utils.readContentsAsString;
 import static gitlet.Repository.GITLET_DIR;
+import static gitlet.Utils.*;
 
 /**
  * Represents a gitlet commit object.
@@ -14,7 +15,7 @@ import static gitlet.Repository.GITLET_DIR;
  *
  * @author ljpurcell
  */
-public class Commit {
+public class Commit implements Serializable {
     /**
      * List all instance variables of the Commit class here with a useful
      * comment above them describing what that variable represents and how that
@@ -52,20 +53,36 @@ public class Commit {
         /**
          * 1. Get parent ref from HEAD
          * 2. If HEAD does not exist or is empty, this is the first commit
-         * 2. If ref exists, map to object using entry in regs
+         * 3. If ref exists, map to object using entry in regs
          */
 
         String headRef = readContentsAsString(join(GITLET_DIR, "HEAD"));
 
         if (headRef.equals("")) {
             dateTime = new Date(0);
-            message = "Initial commit";
         }
         else {
+            // get object using ref
             dateTime = new Date();
-            message = msg;
         }
 
         author = auth;
+        message = msg;
+
+        // still need to reference repo & create ID hash
+    }
+
+    public void writeCommitToDisk() {
+        String dir = id.substring(0, 2);
+        String fileName = id.substring(2);
+        File file = join(GITLET_DIR, "objects", dir, fileName);
+        writeObject(file, this);
+    }
+
+    public Commit readCommitFromDisk(String identifier) {
+        String dir = identifier.substring(0, 2);
+        String fileName = identifier.substring(2);
+        File file = join(GITLET_DIR, "objects", dir, fileName);
+        return readObject(file, Commit.class);
     }
 }
