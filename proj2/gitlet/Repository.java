@@ -1,7 +1,6 @@
 package gitlet;
 
 import java.io.File;
-import java.util.HashSet;
 
 import static gitlet.Utils.*;
 
@@ -26,10 +25,16 @@ public class Repository {
      * The current working directory.
      */
     public static final File CWD = new File(System.getProperty("user.dir"));
+
     /**
      * The .gitlet directory.
      */
     public static final File GITLET_DIR = join(CWD, ".gitlet");
+
+    /**
+     * A reference to the
+     */
+    private static String treeRef;
 
     public static void initialiseGitletRepo() {
         if (GITLET_DIR.exists()) {
@@ -66,6 +71,6 @@ public class Repository {
     }
 
     static private void createInitialCommit() {
-        Commit c = new Commit("Initial commit", "ljpurcell");
+        new Commit("Initial commit", "ljpurcell");
     }
 }

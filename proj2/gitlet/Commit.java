@@ -2,7 +2,6 @@ package gitlet;
 
 import java.io.Serializable;
 import java.io.File;
-import java.time.Instant;
 import java.util.Date;
 
 import static gitlet.Repository.GITLET_DIR;
@@ -47,7 +46,7 @@ public class Commit implements Serializable {
     /**
      * A hex-string reference to the repo tree state
      */
-    private String repoTreeRef;
+    private String treeRef;
 
     public Commit(String msg, String auth) {
         /**
@@ -62,27 +61,40 @@ public class Commit implements Serializable {
             dateTime = new Date(0);
         }
         else {
-            // get object using ref
+            Commit parent = readCommitFromDisk(headRef);
+            treeRef = parent.treeRef;
             dateTime = new Date();
         }
 
         author = auth;
         message = msg;
 
-        // still need to reference repo & create ID hash
+        updateBasedOnStagedFiles();
+
+        writeCommitToDisk();
     }
 
     public void writeCommitToDisk() {
-        String dir = id.substring(0, 2);
-        String fileName = id.substring(2);
-        File file = join(GITLET_DIR, "objects", dir, fileName);
+        File file = getFileForCommitFromId(id);
         writeObject(file, this);
     }
 
-    public Commit readCommitFromDisk(String identifier) {
+    public static Commit readCommitFromDisk(String identifier) {
+        File file = getFileForCommitFromId(identifier);
+        return readObject(file, Commit.class);
+    }
+
+    private static File getFileForCommitFromId(String identifier) {
         String dir = identifier.substring(0, 2);
         String fileName = identifier.substring(2);
-        File file = join(GITLET_DIR, "objects", dir, fileName);
-        return readObject(file, Commit.class);
+        return join(GITLET_DIR, "objects", dir, fileName);
+    }
+
+    public void updateBasedOnStagedFiles() {
+        /**
+         * 1. Get tree using treeRef
+         * 2. Get staged files
+         * 3. Modify tree based on staged files
+         */
     }
 }
