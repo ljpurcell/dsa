@@ -1,6 +1,11 @@
 package gitlet;
 
+import java.time.Instant;
 import java.util.Date;
+
+import static gitlet.Utils.join;
+import static gitlet.Utils.readContentsAsString;
+import static gitlet.Repository.GITLET_DIR;
 
 /**
  * Represents a gitlet commit object.
@@ -29,14 +34,9 @@ public class Commit {
     private String author;
 
     /**
-     * The date the Commit was created.
+     * The date and time the Commit was created.
      */
-    private Date date;
-
-    /**
-     * The time the Commit was created.
-     */
-    private long unixTime;
+    private Date dateTime;
 
     /**
      * A hex-string reference to the parent Commit of THIS
@@ -49,15 +49,23 @@ public class Commit {
     private String repoTreeRef;
 
     public Commit(String msg, String auth) {
-        message = msg;
-        author = auth;
-        if (parentCommitRef != null) {
-            date = new Date();
-            unixTime = new Date().getTime();
+        /**
+         * 1. Get parent ref from HEAD
+         * 2. If HEAD does not exist or is empty, this is the first commit
+         * 2. If ref exists, map to object using entry in regs
+         */
+
+        String headRef = readContentsAsString(join(GITLET_DIR, "HEAD"));
+
+        if (headRef.equals("")) {
+            dateTime = new Date(0);
+            message = "Initial commit";
         }
         else {
-            date = new Date();
-            unixTime = new Date().getTime();
+            dateTime = new Date();
+            message = msg;
         }
+
+        author = auth;
     }
 }

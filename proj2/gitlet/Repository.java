@@ -37,20 +37,36 @@ public class Repository {
         } else if (!GITLET_DIR.mkdir()) {
             throw new GitletException("Could not initialise Gitlet repository");
         } else {
-            createGitletSubFolders();
+            createGitletSubStructure();
             createInitialCommit();
         }
     }
 
-    static private void createGitletSubFolders() {
-        /**
-         * Objects?
-         * Refs?
-         */
+    /**
+     * Sets up the Gitlet directory sub folders and files. Mirrors Git.
+     * HEAD: File. Pointer to current object.
+     * OBJECTS: Directory. Objects (blobs, trees, and commits) stored in sub-folders of first two chars of hash id.
+     * REFS: Directory. Stores named references of hashed objects.
+     */
+    static private void createGitletSubStructure() {
+        boolean head, objects, refs;
 
+        try {
+            head = join(GITLET_DIR, "HEAD").createNewFile();
+        } catch (Exception e) {
+            throw new GitletException("Could not create HEAD file: " + e);
+        }
+
+        objects = join(GITLET_DIR, "objects").mkdir();
+        refs = join(GITLET_DIR, "refs").mkdir();
+
+        if (!(head && objects && refs)) {
+            throw new RuntimeException("Created: HEAD - " + head + ". objects/ - " + objects + ". refs/ - " + refs);
+        }
     }
 
     static private void createInitialCommit() {
-//        Commit c = new Commit();
+        Commit c = new Commit("Commit message", "ljpurcell");
+        System.out.println(c);
     }
 }
