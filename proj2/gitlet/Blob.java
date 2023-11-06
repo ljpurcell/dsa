@@ -13,6 +13,11 @@ public class Blob {
     public Blob(String text) {
         String blobString = "blob " + text.length() + '\0' + text;
         key = Utils.sha1(blobString);
-        content = compress(blobString);
+        try {
+            content = ZLibCompression.compress(blobString);
+        }
+        catch (Exception e) {
+            throw new GitletException("Could not compress '" + text + "': " + e);
+        }
     }
 }
