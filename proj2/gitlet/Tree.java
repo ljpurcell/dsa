@@ -10,7 +10,7 @@ import java.util.List;
  * @author ljpurcell
  */
 
-public class Tree {
+public class Tree extends GitletObject {
     private class Node<T> {
         List<Node<T>> children;
         T item;

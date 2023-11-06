@@ -1,6 +1,8 @@
 package gitlet;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import static gitlet.Utils.*;
 
@@ -32,9 +34,9 @@ public class Repository {
     public static final File GITLET_DIR = join(CWD, ".gitlet");
 
     /**
-     * A reference to the
+     * Staging area, maps file names to blobs
      */
-    private static String treeRef;
+    public static Map<String, Blob> STAGING_AREA = new HashMap<>();
 
     public static void initialiseGitletRepo() {
         if (GITLET_DIR.exists()) {
@@ -75,8 +77,9 @@ public class Repository {
     }
 
     static void addFilesToStagingArea(String ...args) {
-        for (String file: args) {
-
+        for (String fileName: args) {
+            String text = readContentsAsString(join(CWD, fileName));
+            STAGING_AREA.put(fileName, new Blob(text));
         }
     }
 }

@@ -59,7 +59,8 @@ public class Commit extends GitletObject {
             dateTime = new Date(0);
         }
         else {
-            Commit parent = getObjectFromRef(headRef);
+            String parentKey = getKeyFromRef(headRef);
+            Commit parent = getCommit(parentKey);
             treeRef = parent.treeRef;
             dateTime = new Date();
         }
@@ -70,6 +71,7 @@ public class Commit extends GitletObject {
         updateBasedOnStagedFiles();
 
        this.writeToDisk();
+       moveHeadPointerTo(key);
     }
 
     public static Commit getCommit(String k) {

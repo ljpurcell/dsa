@@ -6,8 +6,7 @@ package gitlet;
  *
  * @author ljpurcell
  */
-public class Blob {
-    String key;
+public class Blob extends GitletObject {
     byte[] content;
 
     public Blob(String text) {
@@ -19,5 +18,7 @@ public class Blob {
         catch (Exception e) {
             throw new GitletException("Could not compress '" + text + "': " + e);
         }
+
+        this.writeToDisk();
     }
 }
