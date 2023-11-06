@@ -59,7 +59,7 @@ public class Commit extends GitletObject {
             dateTime = new Date(0);
         }
         else {
-            Commit parent = readCommitFromDisk(headRef);
+            Commit parent = getObjectFromRef(headRef);
             treeRef = parent.treeRef;
             dateTime = new Date();
         }
@@ -69,11 +69,11 @@ public class Commit extends GitletObject {
 
         updateBasedOnStagedFiles();
 
-       writeGitletObjectToDisk(this);
+       this.writeToDisk();
     }
 
     public static Commit getCommit(String k) {
-        return (Commit) readGitletObjectFromDisk(k);
+        return (Commit) readFromDisk(k);
     }
 
     public void updateBasedOnStagedFiles() {
