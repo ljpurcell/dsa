@@ -7,4 +7,12 @@ package gitlet;
  * @author ljpurcell
  */
 public class Blob {
+    String key;
+    byte[] content;
+
+    public Blob(String text) {
+        String blobString = "blob " + text.length() + '\0' + text;
+        key = Utils.sha1(blobString);
+        content = compress(blobString);
+    }
 }
