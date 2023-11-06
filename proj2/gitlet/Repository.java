@@ -76,10 +76,15 @@ public class Repository {
         new Commit("Initial commit", "ljpurcell");
     }
 
-    static void addFilesToStagingArea(String ...args) {
-        for (String fileName: args) {
+    static void addFilesToStagingArea(String... args) {
+        for (String fileName : args) {
             String text = readContentsAsString(join(CWD, fileName));
-            STAGING_AREA.put(fileName, new Blob(text));
+             Blob blob = new Blob(text);
+            if (STAGING_AREA.containsKey(fileName)) {
+                STAGING_AREA.replace(fileName, blob);
+            } else {
+                STAGING_AREA.put(fileName, blob);
+            }
         }
     }
 }
