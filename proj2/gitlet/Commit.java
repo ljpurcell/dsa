@@ -1,6 +1,5 @@
 package gitlet;
 
-import java.io.Serializable;
 import java.io.File;
 import java.util.Date;
 
@@ -14,14 +13,13 @@ import static gitlet.Utils.*;
  *
  * @author ljpurcell
  */
-public class Commit implements Serializable {
+public class Commit extends GitletObject {
     /**
      * List all instance variables of the Commit class here with a useful
      * comment above them describing what that variable represents and how that
      * variable is used.
      */
 
-    private String id; // Hex-string from commit hash?
 
     /**
      * The message of this Commit.
@@ -71,23 +69,11 @@ public class Commit implements Serializable {
 
         updateBasedOnStagedFiles();
 
-        writeCommitToDisk();
+       writeGitletObjectToDisk(this);
     }
 
-    public void writeCommitToDisk() {
-        File file = getFileForCommitFromId(id);
-        writeObject(file, this);
-    }
-
-    public static Commit readCommitFromDisk(String identifier) {
-        File file = getFileForCommitFromId(identifier);
-        return readObject(file, Commit.class);
-    }
-
-    private static File getFileForCommitFromId(String identifier) {
-        String dir = identifier.substring(0, 2);
-        String fileName = identifier.substring(2);
-        return join(GITLET_DIR, "objects", dir, fileName);
+    public static Commit getCommit(String k) {
+        return (Commit) readGitletObjectFromDisk(k);
     }
 
     public void updateBasedOnStagedFiles() {
@@ -96,5 +82,9 @@ public class Commit implements Serializable {
          * 2. Get staged files
          * 3. Modify tree based on staged files
          */
+    }
+
+    public String key() {
+        return key;
     }
 }

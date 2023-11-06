@@ -236,4 +236,26 @@ class Utils {
         System.out.printf(msg, args);
         System.out.println();
     }
+
+    public static GitletObject readGitletObjectFromDisk(String key) {
+        File file = getFileFromKey(key);
+        return readObject(file, GitletObject.class);
+    }
+
+
+    public static void writeGitletObjectToDisk(Object o) {
+        if (o instanceof GitletObject go) {
+           File f = getFileFromKey(go.key());
+           writeObject(f, go);
+        }
+        else {
+            throw new GitletException("Cannot write object to disk: " + o);
+        }
+    }
+
+    public static File getFileFromKey(String key) {
+        String dir = key.substring(0, 2);
+        String fileName = key.substring(2);
+        return join(Repository.GITLET_DIR, "objects", dir, fileName);
+    }
 }
