@@ -73,4 +73,10 @@ public class Repository {
     static private void createInitialCommit() {
         new Commit("Initial commit", "ljpurcell");
     }
+
+    static void addFilesToStagingArea(String ...args) {
+        for (String file: args) {
+
+        }
+    }
 }

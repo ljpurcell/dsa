@@ -52,7 +52,7 @@ public class Commit implements Serializable {
         /**
          * 1. Get parent ref from HEAD
          * 2. If HEAD does not exist or is empty, this is the first commit
-         * 3. If ref exists, map to object using entry in regs
+         * 3. If ref exists, map to object using entry in refs
          */
 
         String headRef = readContentsAsString(join(GITLET_DIR, "HEAD"));

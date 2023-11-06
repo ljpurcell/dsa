@@ -16,7 +16,7 @@ public class Main {
                 Repository.initialiseGitletRepo();
                 break;
             case "add":
-                // TODO: handle the `add [filename]` command
+                Repository.addFilesToStagingArea(args);
                 break;
             // TODO: FILL THE REST IN
         }
