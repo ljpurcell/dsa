@@ -11,18 +11,32 @@ abstract class GitletObject implements Serializable {
     }
 
     public void writeToDisk() {
-        File f = getFileFromKey(key);
+        File f = getFileFromKey(key, this.getClass());
         Utils.writeObject(f, this);
     }
 
-    public static GitletObject readFromDisk(String key) {
-        File file = getFileFromKey(key);
-        return Utils.readObject(file, GitletObject.class);
+    protected static <T extends GitletObject> T readObjectFromDisk(String key, Class<T> objectClass) {
+        if (objectClass.equals(Commit.class) || objectClass.equals(Blob.class)) {
+            File file = getFileFromKey(key, objectClass);
+            return (T) Utils.readObject(file, GitletObject.class);
+        }
+
+        throw new GitletException("Class not recognised Gitlet object: " + objectClass);
     }
 
-    private static File getFileFromKey(String key) {
+    private static File getFileFromKey(String key, Class<?> objectClass) {
+        String classDir;
+        if (objectClass.equals(Commit.class)) {
+            classDir = "commits";
+        } else if (objectClass.equals(Blob.class)) {
+            classDir = "blobs";
+        }
+        else {
+            throw new GitletException("Class not recognised Gitlet object: " + objectClass);
+        }
+
         String dir = key.substring(0, 2);
         String fileName = key.substring(2);
-        return Utils.join(Repository.GITLET_DIR, "objects", dir, fileName);
+        return Utils.join(Repository.GITLET_DIR, "objects", classDir, dir, fileName);
     }
 }

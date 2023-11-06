@@ -74,8 +74,8 @@ public class Commit extends GitletObject {
        moveHeadPointerTo(key);
     }
 
-    public static Commit getCommit(String k) {
-        return (Commit) readFromDisk(k);
+    public static Commit getCommit(String idKey) {
+        return readObjectFromDisk(idKey, Commit.class);
     }
 
     public void updateBasedOnStagedFiles() {

@@ -21,4 +21,8 @@ public class Blob extends GitletObject {
 
         this.writeToDisk();
     }
+
+    public static Blob readFromDisk(String idKey) {
+        return readObjectFromDisk(idKey, Blob.class);
+    }
 }
