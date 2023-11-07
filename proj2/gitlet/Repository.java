@@ -56,7 +56,7 @@ public class Repository {
      * REFS: Directory. Stores named references of hashed objects.
      */
     static private void createGitletSubStructure() {
-        boolean head, objects, refs;
+        boolean head, refs, blobs, commits;
 
         try {
             head = join(GITLET_DIR, "HEAD").createNewFile();
@@ -64,11 +64,12 @@ public class Repository {
             throw new GitletException("Could not create HEAD file: " + e);
         }
 
-        objects = join(GITLET_DIR, "objects").mkdir();
         refs = join(GITLET_DIR, "refs").mkdir();
+        blobs = join(GITLET_DIR, "objects", "blobs").mkdirs();
+        commits = join(GITLET_DIR, "objects", "commits").mkdirs();
 
-        if (!(head && objects && refs)) {
-            throw new GitletException("Created: HEAD - " + head + ". objects/ - " + objects + ". refs/ - " + refs);
+        if (!(refs && blobs && commits)) {
+            throw new GitletException("Created: objects/blobs/ - " + blobs + ". objects/commits/" + commits + ". refs/ - " + refs);
         }
     }
 
@@ -77,13 +78,14 @@ public class Repository {
     }
 
     static void addFilesToStagingArea(String... args) {
-        for (String fileName : args) {
-            String text = readContentsAsString(join(CWD, fileName));
-             Blob blob = new Blob(text);
-            if (STAGING_AREA.containsKey(fileName)) {
-                STAGING_AREA.replace(fileName, blob);
+        for (String file : args) {
+            String text = readContentsAsString(join(CWD, file));
+            Blob blob = new Blob(text);
+            if (STAGING_AREA.containsKey(file)) {
+                Blob lastVersion = Blob.readFromDisk("KEY GOES HERE");
+                STAGING_AREA.get(file).equals(lastVersion) ? STAGING_AREA.remove(file) : STAGING_AREA.replace(file, blob);
             } else {
-                STAGING_AREA.put(fileName, blob);
+                STAGING_AREA.put(file, blob);
             }
         }
     }
