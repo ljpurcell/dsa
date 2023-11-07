@@ -18,7 +18,7 @@ abstract class GitletObject implements Serializable {
     protected static <T extends GitletObject> T readObjectFromDisk(String key, Class<T> objectClass) {
         if (objectClass.equals(Commit.class) || objectClass.equals(Blob.class)) {
             File file = getFileFromKey(key, objectClass);
-            return (T) Utils.readObject(file, GitletObject.class);
+            return Utils.readObject(file, objectClass);
         }
 
         throw new GitletException("Class not recognised Gitlet object: " + objectClass);

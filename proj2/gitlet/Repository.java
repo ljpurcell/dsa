@@ -83,7 +83,11 @@ public class Repository {
             Blob blob = new Blob(text);
             if (STAGING_AREA.containsKey(file)) {
                 Blob lastVersion = Blob.readFromDisk("KEY GOES HERE");
-                STAGING_AREA.get(file).equals(lastVersion) ? STAGING_AREA.remove(file) : STAGING_AREA.replace(file, blob);
+                if (STAGING_AREA.get(file).equals(lastVersion)) {
+                    STAGING_AREA.remove(file);
+                } else {
+                    STAGING_AREA.replace(file, blob);
+                }
             } else {
                 STAGING_AREA.put(file, blob);
             }

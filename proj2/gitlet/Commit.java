@@ -53,14 +53,13 @@ public class Commit extends GitletObject {
          * 3. If ref exists, map to object using entry in refs
          */
 
-        String headRef = readContentsAsString(join(GITLET_DIR, "HEAD"));
+        String headKey = readContentsAsString(join(GITLET_DIR, "HEAD"));
 
-        if (headRef.equals("")) {
+        if (headKey.equals("")) {
             dateTime = new Date(0);
         }
         else {
-            String parentKey = getKeyFromRef(headRef);
-            Commit parent = getCommit(parentKey);
+            Commit parent = Commit.getCommit(headKey);
             treeRef = parent.treeRef;
             dateTime = new Date();
         }
@@ -88,5 +87,9 @@ public class Commit extends GitletObject {
 
     public String key() {
         return key;
+    }
+
+    private void moveHeadPointerTo(String k) {
+        writeContents(join(GITLET_DIR, "HEAD"), k);
     }
 }
