@@ -34,9 +34,9 @@ public class Repository {
     public static final File GITLET_DIR = join(CWD, ".gitlet");
 
     /**
-     * Staging area, maps file names to blobs
+     * Staging area, maps file names to blob keys
      */
-    public static Map<String, Blob> STAGING_AREA = new HashMap<>();
+    public static Map<String, String> STAGING_AREA = new HashMap<>();
 
     public static void initialiseGitletRepo() {
         if (GITLET_DIR.exists()) {
@@ -56,7 +56,7 @@ public class Repository {
      * REFS: Directory. Stores named references of hashed objects.
      */
     static private void createGitletSubStructure() {
-        boolean head, refs, blobs, commits;
+        boolean head, refs, blobs, trees, commits;
 
         try {
             head = join(GITLET_DIR, "HEAD").createNewFile();
@@ -66,10 +66,11 @@ public class Repository {
 
         refs = join(GITLET_DIR, "refs").mkdir();
         blobs = join(GITLET_DIR, "objects", "blobs").mkdirs();
+        trees = join(GITLET_DIR, "objects", "trees").mkdirs();
         commits = join(GITLET_DIR, "objects", "commits").mkdirs();
 
-        if (!(refs && blobs && commits)) {
-            throw new GitletException("Created: objects/blobs/ - " + blobs + ". objects/commits/" + commits + ". refs/ - " + refs);
+        if (!(refs && blobs && trees && commits)) {
+            throw new GitletException("Created: blobs/" + blobs + ". trees/" + trees + ". commits/" + commits + ". refs/" + refs);
         }
     }
 
@@ -78,19 +79,30 @@ public class Repository {
     }
 
     static void addFilesToStagingArea(String... args) {
+
+        Commit headCommit = Commit.getHeadCommit();
+        String headTreeRef = headCommit.treeRef();
+        Tree headTree = Tree.getTree(headTreeRef);
+
         for (String file : args) {
             String text = readContentsAsString(join(CWD, file));
             Blob blob = new Blob(text);
             if (STAGING_AREA.containsKey(file)) {
-                Blob lastVersion = Blob.readFromDisk("KEY GOES HERE");
-                if (STAGING_AREA.get(file).equals(lastVersion)) {
+                Blob lastVersion = headTree.getBlobUsingFileName(file);
+                if (blob.key().equals(lastVersion.key())) {
                     STAGING_AREA.remove(file);
                 } else {
-                    STAGING_AREA.replace(file, blob);
+                    STAGING_AREA.replace(file, blob.key());
                 }
             } else {
-                STAGING_AREA.put(file, blob);
+                STAGING_AREA.put(file, blob.key());
             }
         }
+
+        updateStagingIndex();
+    }
+
+    private static void updateStagingIndex() {
+
     }
 }

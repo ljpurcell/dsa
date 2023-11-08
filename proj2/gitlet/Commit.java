@@ -77,6 +77,10 @@ public class Commit extends GitletObject {
         return readObjectFromDisk(idKey, Commit.class);
     }
 
+    public String treeRef() {
+       return treeRef;
+    }
+
     public void updateBasedOnStagedFiles() {
         /**
          * 1. Get tree using treeRef
@@ -89,6 +93,13 @@ public class Commit extends GitletObject {
         String commitString = date + msg + tree;
         return Utils.sha1(commitString);
     }
+
+    public static Commit getHeadCommit() {
+        String headKey = readContentsAsString(join(GITLET_DIR, "HEAD"));
+        return readFromDisk(headKey);
+    }
+
+    public static Commit readFromDisk(String idKey) { return readObjectFromDisk(idKey, Commit.class); }
 
     public String key() {
         return key;

@@ -16,7 +16,7 @@ abstract class GitletObject implements Serializable {
     }
 
     protected static <T extends GitletObject> T readObjectFromDisk(String key, Class<T> objectClass) {
-        if (objectClass.equals(Commit.class) || objectClass.equals(Blob.class)) {
+        if (objectClass.equals(Commit.class) || objectClass.equals(Tree.class) || objectClass.equals(Blob.class)) {
             File file = getFileFromKey(key, objectClass);
             return Utils.readObject(file, objectClass);
         }
@@ -28,10 +28,11 @@ abstract class GitletObject implements Serializable {
         String classDir;
         if (objectClass.equals(Commit.class)) {
             classDir = "commits";
+        } else if (objectClass.equals(Tree.class)) {
+            classDir = "trees";
         } else if (objectClass.equals(Blob.class)) {
             classDir = "blobs";
-        }
-        else {
+        } else {
             throw new GitletException("Class not recognised Gitlet object: " + objectClass);
         }
 

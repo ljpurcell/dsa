@@ -1,6 +1,7 @@
 package gitlet;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a gitlet tree object.
@@ -11,12 +12,25 @@ import java.util.List;
  */
 
 public class Tree extends GitletObject {
-    private class Node<T> {
-        List<Node<T>> children;
-        T item;
+    /**
+     * File Name -> Blob Key
+     */
+    Map<String, String> blobMap;
 
-        protected Node(T i) {
-           item = i;
-        }
-    }
+   public Tree() {
+       blobMap = new HashMap<>();
+   }
+
+   public static Tree getTree(String k) {
+       return readObjectFromDisk(k, Tree.class);
+   }
+
+   public Blob getBlobUsingFileName(String fileName) {
+       Blob fileBlob = null;
+       if (blobMap.containsKey(fileName)) {
+           String blobKey = blobMap.get(fileName);
+           fileBlob = Blob.readFromDisk(blobKey);
+       }
+       return fileBlob;
+   }
 }
