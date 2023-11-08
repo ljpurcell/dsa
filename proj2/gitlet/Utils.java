@@ -121,7 +121,11 @@ class Utils {
                 throw
                     new IllegalArgumentException("cannot overwrite directory");
             }
-            file.getParentFile().mkdirs();
+
+            if (!file.getParentFile().mkdirs()) {
+                throw new IOException("Couldn't create path for: " + file.getParentFile());
+            }
+
             BufferedOutputStream str =
                 new BufferedOutputStream(Files.newOutputStream(file.toPath()));
             for (Object obj : contents) {
