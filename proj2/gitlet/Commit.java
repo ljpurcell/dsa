@@ -57,8 +57,7 @@ public class Commit extends GitletObject {
 
         if (headKey.equals("")) {
             dateTime = new Date(0);
-        }
-        else {
+        } else {
             Commit parent = Commit.getCommit(headKey);
             treeRef = parent.treeRef;
             dateTime = new Date();
@@ -66,11 +65,12 @@ public class Commit extends GitletObject {
 
         author = auth;
         message = msg;
+        key = createCommitKey(dateTime, message, treeRef);
+
 
         updateBasedOnStagedFiles();
-
-       this.writeToDisk();
-       moveHeadPointerTo(key);
+        this.writeToDisk();
+        moveHeadPointerTo(key);
     }
 
     public static Commit getCommit(String idKey) {
@@ -83,6 +83,11 @@ public class Commit extends GitletObject {
          * 2. Get staged files
          * 3. Modify tree based on staged files
          */
+    }
+
+    private static String createCommitKey(Date date, String msg, String tree) {
+        String commitString = date + msg + tree;
+        return Utils.sha1(commitString);
     }
 
     public String key() {
