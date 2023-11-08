@@ -22,13 +22,11 @@ public class Main {
         } else {
 
             switch (firstArg) {
-                case "init":
-                    Repository.initialiseGitletRepo();
-                    break;
-                case "add":
+                case "init" -> Repository.initialiseGitletRepo();
+                case "add" -> {
                     String[] files = Arrays.copyOfRange(args, 1, args.length);
                     Repository.addFilesToStagingArea(files);
-                    break;
+                }
                 // TODO: FILL THE REST IN
             }
         }
