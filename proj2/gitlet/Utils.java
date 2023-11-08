@@ -122,7 +122,7 @@ class Utils {
                     new IllegalArgumentException("cannot overwrite directory");
             }
 
-            if (!file.getParentFile().mkdirs()) {
+            if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
                 throw new IOException("Couldn't create path for: " + file.getParentFile());
             }
 
