@@ -15,6 +15,7 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO: if args is empty, show help
+        // TODO: Consider making enum of valid commands
         String firstArg = args[0];
         if (!Repository.GITLET_DIR.exists() && !firstArg.equals("init")) {
             System.out.println("Not in an initialized Gitlet directory");
