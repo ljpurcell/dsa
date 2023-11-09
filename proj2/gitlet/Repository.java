@@ -1,9 +1,7 @@
 package gitlet;
 
-import java.io.File;
-import java.io.Serializable;
+import java.io.*;
 import java.util.HashMap;
-import java.util.Map;
 
 import static gitlet.Utils.*;
 
@@ -52,7 +50,7 @@ public class Repository {
     /**
      * Staging area, maps file names to blob keys
      */
-    public static Map<String, String> STAGING_AREA = new HashMap<>();
+    public static HashMap<String, String> STAGING_AREA = new HashMap<>();
 
     public static void initialiseGitletRepo() {
         if (GITLET_DIR.exists()) {
@@ -86,7 +84,7 @@ public class Repository {
         commits = join(OBJECTS_DIR, "commits").mkdirs();
 
         if (!(blobs && trees && commits)) {
-            throw new GitletException("Created: blobs/" + blobs + ". trees/" + trees + ". commits/" + commits + ". refs/" + refs);
+            throw new GitletException("Created: blobs/" + blobs + ". trees/" + trees + ". commits/" + commits);
         }
     }
 
@@ -95,6 +93,8 @@ public class Repository {
     }
 
     static void addFilesToStagingArea(String... args) {
+
+        setStagingAreaFromIndexFile();
 
         Tree headTree = Commit.getLastCommitTree();
 
@@ -112,12 +112,27 @@ public class Repository {
                 STAGING_AREA.put(file, newBlob.key());
             }
         }
+        STAGING_AREA.put("DUMMY KEY", "here is a value");
 
-        System.out.println(STAGING_AREA);
+//        System.out.println(STAGING_AREA);
         writeStagingAreaToIndexFile();
     }
 
+    private static void setStagingAreaFromIndexFile() {
+        String stagingString = readContentsAsString(INDEX_FILE);
+        stagingString = stagingString.substring(1, stagingString.length() - 1);
+        String[] pairs = stagingString.split(",");
+
+        for (String p : pairs) {
+            p = p.trim();
+            int equals = p.lastIndexOf("=");
+            String key = p.substring(0, equals);
+            String val = p.substring(equals + 1);
+            STAGING_AREA.put(key, val);
+        }
+    }
+
     private static void writeStagingAreaToIndexFile() {
-        writeObject(INDEX_FILE, (Serializable) STAGING_AREA);
+        writeContents(INDEX_FILE, STAGING_AREA.toString());
     }
 }
