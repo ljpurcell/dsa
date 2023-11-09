@@ -1,6 +1,7 @@
 package gitlet;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,12 +57,13 @@ public class Repository {
      * REFS: Directory. Stores named references of hashed objects.
      */
     static private void createGitletSubStructure() {
-        boolean head, refs, blobs, trees, commits;
+        boolean head, index, refs, blobs, trees, commits;
 
         try {
             head = join(GITLET_DIR, "HEAD").createNewFile();
+            index = join(GITLET_DIR, "index").createNewFile();
         } catch (Exception e) {
-            throw new GitletException("Could not create HEAD file: " + e);
+            throw new GitletException("Could not create HEAD or index file: " + e);
         }
 
         refs = join(GITLET_DIR, "refs").mkdir();
@@ -84,23 +86,25 @@ public class Repository {
 
         for (String file : args) {
             String text = readContentsAsString(join(CWD, file));
-            Blob blob = new Blob(text);
+            Blob newBlob = new Blob(text);
             if (STAGING_AREA.containsKey(file)) {
-                Blob lastVersion = headTree.getBlobUsingFileName(file);
-                if (blob.key().equals(lastVersion.key())) {
+                Blob lastBlob = headTree.getBlobUsingFileName(file);
+                if (newBlob.key().equals(lastBlob.key())) {
                     STAGING_AREA.remove(file);
                 } else {
-                    STAGING_AREA.replace(file, blob.key());
+                    STAGING_AREA.replace(file, newBlob.key());
                 }
             } else {
-                STAGING_AREA.put(file, blob.key());
+                STAGING_AREA.put(file, newBlob.key());
             }
         }
 
+        System.out.println(STAGING_AREA);
         updateStagingIndex();
     }
 
     private static void updateStagingIndex() {
-
+        File indexFile = join(GITLET_DIR, "index");
+        writeObject(indexFile, (Serializable) STAGING_AREA);
     }
 }

@@ -1,5 +1,6 @@
 package gitlet;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import java.util.Map;
  * @author ljpurcell
  */
 
-public class Tree extends GitletObject {
+public class Tree extends GitletObject implements Serializable {
     /**
      * File Name -> Blob Key
      */
@@ -19,6 +20,8 @@ public class Tree extends GitletObject {
 
    public Tree() {
        blobMap = new HashMap<>();
+       key = Utils.sha1("tree "  + blobMap);
+       writeToDisk();
    }
 
    public static Tree getTree(String k) {
