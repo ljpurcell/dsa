@@ -35,6 +35,21 @@ public class Repository {
     public static final File GITLET_DIR = join(CWD, ".gitlet");
 
     /**
+     * HEAD file.
+     */
+    public static final File HEAD_FILE = join(GITLET_DIR, "HEAD");
+
+    /**
+     * INDEX file.
+     */
+    public static final File INDEX_FILE = join(GITLET_DIR, "index");
+
+    /**
+     * OBJECTS directory
+     */
+    public static final File OBJECTS_DIR = join(GITLET_DIR, "objects");
+
+    /**
      * Staging area, maps file names to blob keys
      */
     public static Map<String, String> STAGING_AREA = new HashMap<>();
@@ -57,21 +72,20 @@ public class Repository {
      * REFS: Directory. Stores named references of hashed objects.
      */
     static private void createGitletSubStructure() {
-        boolean head, index, refs, blobs, trees, commits;
+        boolean head, index, blobs, trees, commits;
 
         try {
-            head = join(GITLET_DIR, "HEAD").createNewFile();
-            index = join(GITLET_DIR, "index").createNewFile();
+            head = HEAD_FILE.createNewFile();
+            index = INDEX_FILE.createNewFile();
         } catch (Exception e) {
             throw new GitletException("Could not create HEAD or index file: " + e);
         }
 
-        refs = join(GITLET_DIR, "refs").mkdir();
-        blobs = join(GITLET_DIR, "objects", "blobs").mkdirs();
-        trees = join(GITLET_DIR, "objects", "trees").mkdirs();
-        commits = join(GITLET_DIR, "objects", "commits").mkdirs();
+        blobs = join(OBJECTS_DIR, "blobs").mkdirs();
+        trees = join(OBJECTS_DIR, "trees").mkdirs();
+        commits = join(OBJECTS_DIR, "commits").mkdirs();
 
-        if (!(refs && blobs && trees && commits)) {
+        if (!(blobs && trees && commits)) {
             throw new GitletException("Created: blobs/" + blobs + ". trees/" + trees + ". commits/" + commits + ". refs/" + refs);
         }
     }
@@ -100,11 +114,10 @@ public class Repository {
         }
 
         System.out.println(STAGING_AREA);
-        updateStagingIndex();
+        writeStagingAreaToIndexFile();
     }
 
-    private static void updateStagingIndex() {
-        File indexFile = join(GITLET_DIR, "index");
-        writeObject(indexFile, (Serializable) STAGING_AREA);
+    private static void writeStagingAreaToIndexFile() {
+        writeObject(INDEX_FILE, (Serializable) STAGING_AREA);
     }
 }

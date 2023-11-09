@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Date;
 
 import static gitlet.Repository.GITLET_DIR;
+import static gitlet.Repository.HEAD_FILE;
 import static gitlet.Utils.*;
 
 /**
@@ -57,6 +58,7 @@ public class Commit extends GitletObject {
 
         if (headKey.equals("")) {
             dateTime = new Date(0);
+            treeRef = new Tree().key();
         } else {
             Commit parent = Commit.getCommit(headKey);
             treeRef = parent.treeRef;
@@ -78,15 +80,11 @@ public class Commit extends GitletObject {
     }
 
     public String treeRef() {
-       return treeRef;
+        return treeRef;
     }
 
     public void updateBasedOnStagedFiles() {
-        /**
-         * 1. Get tree using treeRef
-         * 2. Get staged files
-         * 3. Modify tree based on staged files
-         */
+
     }
 
     private static String createCommitKey(Date date, String msg, String tree) {
@@ -95,7 +93,7 @@ public class Commit extends GitletObject {
     }
 
     public static Commit getHeadCommit() {
-        String headKey = readContentsAsString(join(GITLET_DIR, "HEAD"));
+        String headKey = readContentsAsString(HEAD_FILE);
         return readFromDisk(headKey);
     }
 
@@ -105,13 +103,15 @@ public class Commit extends GitletObject {
         return Tree.getTree(headTreeRef);
     }
 
-    public static Commit readFromDisk(String idKey) { return readObjectFromDisk(idKey, Commit.class); }
+    public static Commit readFromDisk(String idKey) {
+        return readObjectFromDisk(idKey, Commit.class);
+    }
 
     public String key() {
         return key;
     }
 
     private void moveHeadPointerTo(String k) {
-        writeContents(join(GITLET_DIR, "HEAD"), k);
+        writeContents(join(HEAD_FILE), k);
     }
 }
