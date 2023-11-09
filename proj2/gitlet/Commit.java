@@ -99,6 +99,12 @@ public class Commit extends GitletObject {
         return readFromDisk(headKey);
     }
 
+    public static Tree getLastCommitTree() {
+        Commit headCommit = Commit.getHeadCommit();
+        String headTreeRef = headCommit.treeRef();
+        return Tree.getTree(headTreeRef);
+    }
+
     public static Commit readFromDisk(String idKey) { return readObjectFromDisk(idKey, Commit.class); }
 
     public String key() {

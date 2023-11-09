@@ -80,9 +80,7 @@ public class Repository {
 
     static void addFilesToStagingArea(String... args) {
 
-        Commit headCommit = Commit.getHeadCommit();
-        String headTreeRef = headCommit.treeRef();
-        Tree headTree = Tree.getTree(headTreeRef);
+        Tree headTree = Commit.getLastCommitTree();
 
         for (String file : args) {
             String text = readContentsAsString(join(CWD, file));
