@@ -1,5 +1,7 @@
 package gitlet;
 
+import java.util.Arrays;
+
 /**
  * Represents a gitlet blob object.
  * Blobs are gitlet's method of representing a version of a file.
@@ -24,5 +26,9 @@ public class Blob extends GitletObject {
 
     public static Blob readFromDisk(String idKey) {
         return readObjectFromDisk(idKey, Blob.class);
+    }
+
+    public String getContentString() {
+        return Arrays.toString(content);
     }
 }

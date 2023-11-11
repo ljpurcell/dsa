@@ -16,11 +16,11 @@ public class Tree extends GitletObject implements Serializable {
     /**
      * File Name -> Blob Key
      */
-    Map<String, String> blobMap;
+    HashMap<String, String> fileBlobMap;
 
    public Tree() {
-       blobMap = new HashMap<>();
-       key = Utils.sha1("tree "  + blobMap);
+       fileBlobMap = new HashMap<>();
+       key = Utils.sha1("tree "  + fileBlobMap);
        writeToDisk();
    }
 
@@ -30,10 +30,14 @@ public class Tree extends GitletObject implements Serializable {
 
    public Blob getBlobUsingFileName(String fileName) {
        Blob fileBlob = null;
-       if (blobMap.containsKey(fileName)) {
-           String blobKey = blobMap.get(fileName);
+       if (fileBlobMap.containsKey(fileName)) {
+           String blobKey = fileBlobMap.get(fileName);
            fileBlob = Blob.readFromDisk(blobKey);
        }
        return fileBlob;
+   }
+
+   public Map<String, String> getFileBlobMap() {
+       return fileBlobMap;
    }
 }

@@ -23,6 +23,11 @@ public class Repository {
      */
 
     /**
+     * Author
+     */
+    public static final String AUTHOR = "ljpurcell";
+
+    /**
      * The current working directory.
      */
     public static final File CWD = new File(System.getProperty("user.dir"));
@@ -94,7 +99,7 @@ public class Repository {
 
     static void addFileToStagingArea(String... args) {
 
-        setStagingMapFromIndexFile();
+        STAGING_MAP = getStagingMap();
 
         Tree headTree = Commit.getLastCommitTree();
 
@@ -116,7 +121,16 @@ public class Repository {
         writeStagingAreaToIndexFile();
     }
 
-    private static void setStagingMapFromIndexFile() {
+    public static void createCommit(String msg) {
+        Commit c = new Commit(msg, AUTHOR);
+    }
+
+    public static HashMap<String, String> getStagingMap() {
+        return STAGING_MAP = getStagingMapFromIndexFile();
+    }
+
+    private static HashMap<String, String> getStagingMapFromIndexFile() {
+        HashMap<String, String> map = new HashMap<>();
         String stagingString = readContentsAsString(INDEX_FILE);
         if (!stagingString.equals("")) {
             stagingString = stagingString.substring(1, stagingString.length() - 1);
@@ -127,9 +141,16 @@ public class Repository {
                 int equals = p.lastIndexOf("=");
                 String key = p.substring(0, equals);
                 String val = p.substring(equals + 1);
-                STAGING_MAP.put(key, val);
+                map.put(key, val);
             }
         }
+
+        return map;
+    }
+
+    public static void clearStagingMapAndIndexFile() {
+       writeContents(INDEX_FILE, "");
+       STAGING_MAP.clear();
     }
 
     private static void writeStagingAreaToIndexFile() {

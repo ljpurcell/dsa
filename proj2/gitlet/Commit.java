@@ -1,10 +1,8 @@
 package gitlet;
 
-import java.io.File;
 import java.util.Date;
 
-import static gitlet.Repository.GITLET_DIR;
-import static gitlet.Repository.HEAD_FILE;
+import static gitlet.Repository.*;
 import static gitlet.Utils.*;
 
 /**
@@ -54,24 +52,17 @@ public class Commit extends GitletObject {
          * 3. If ref exists, map to object using entry in refs
          */
 
-        String headKey = readContentsAsString(join(GITLET_DIR, "HEAD"));
-
-        if (headKey.equals("")) {
-            dateTime = new Date(0);
-            treeRef = new Tree().key();
-        } else {
-            Commit parent = Commit.getCommit(headKey);
-            treeRef = parent.treeRef;
-            dateTime = new Date();
-        }
+       boolean isFirstCommit = setUpCommitBasedOnParent();
 
         author = auth;
         message = msg;
         key = createCommitKey(dateTime, message, treeRef);
 
+        if (!isFirstCommit) {
+            updateBasedOnStagedFiles();
+        }
 
-        updateBasedOnStagedFiles();
-        this.writeToDisk();
+        writeToDisk();
         moveHeadPointerTo(key);
     }
 
@@ -79,12 +70,41 @@ public class Commit extends GitletObject {
         return readObjectFromDisk(idKey, Commit.class);
     }
 
-    public String treeRef() {
-        return treeRef;
+    private boolean setUpCommitBasedOnParent() {
+        boolean firstCommit = false;
+        String headKey = readContentsAsString(join(GITLET_DIR, "HEAD"));
+
+        if (headKey.equals("")) {
+            dateTime = new Date(0);
+            treeRef = new Tree().key();
+            firstCommit = true;
+        } else {
+            Commit parent = Commit.getCommit(headKey);
+            treeRef = parent.treeRef();
+            dateTime = new Date();
+        }
+
+        return firstCommit;
     }
 
     public void updateBasedOnStagedFiles() {
+        Tree t = Tree.getTree(treeRef);
+        STAGING_MAP = Repository.getStagingMap();
 
+        if (STAGING_MAP.isEmpty()) {
+            System.out.println("No changes added to the commit.");
+        }
+        else {
+            for (String file: STAGING_MAP.keySet()) {
+                Blob b = t.getBlobUsingFileName(file);
+                if (b != null) {
+                    t.getFileBlobMap().replace(file, b.key());
+                }
+            }
+        }
+        // TODO need remove any files that were removed since last commit
+
+        Repository.clearStagingMapAndIndexFile();
     }
 
     private static String createCommitKey(Date date, String msg, String tree) {
@@ -109,6 +129,10 @@ public class Commit extends GitletObject {
 
     public String key() {
         return key;
+    }
+
+    public String treeRef() {
+        return treeRef;
     }
 
     private void moveHeadPointerTo(String k) {

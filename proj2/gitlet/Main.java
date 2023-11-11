@@ -1,5 +1,7 @@
 package gitlet;
 
+import java.util.HashMap;
+
 /**
  * Driver class for Gitlet, a subset of the Git version-control system.
  *
@@ -26,7 +28,22 @@ public class Main {
                         Repository.addFileToStagingArea(args[1]);
                     }
                 }
-                // TODO: FILL THE REST IN
+                case "commit" -> {
+                    if (args.length < 2) {
+                        System.out.println("Please enter a commit message.");
+                    }
+                    else {
+                        Repository.createCommit(args[1]);
+                    }
+                }
+                case "test" -> {
+                    Commit c = Commit.getHeadCommit();
+                    Tree t = Tree.getTree(c.treeRef());
+                    for (String blobKey: t.getFileBlobMap().values()) {
+                        Blob b = Blob.readFromDisk(blobKey);
+                        System.out.println(b.getContentString());
+                    }
+                }
             }
         }
     }
