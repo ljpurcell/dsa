@@ -112,9 +112,7 @@ public class Repository {
                 STAGING_MAP.put(file, newBlob.key());
             }
         }
-        STAGING_MAP.put("DUMMY KEY", "here is a value");
 
-//        System.out.println(STAGING_AREA);
         writeStagingAreaToIndexFile();
     }
 

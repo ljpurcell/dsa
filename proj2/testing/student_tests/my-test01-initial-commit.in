@@ -1,4 +1,5 @@
-# Basic initialization
+# Initialisation. Checks file exists for initial commit and the details are correct
 > init
 <<<
-E .gitlet/objects/commits/whatever-the-first-commit-hash-is
+E .gitlet/objects/commits/9a/73153688baa7244ae31fa838ce0c73872fb42b
+= initial_commit.ser .gitlet/objects/commits/9a/73153688baa7244ae31fa838ce0c73872fb42b
