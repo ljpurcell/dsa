@@ -50,7 +50,7 @@ public class Repository {
     /**
      * Staging area, maps file names to blob keys
      */
-    public static HashMap<String, String> STAGING_AREA = new HashMap<>();
+    public static HashMap<String, String> STAGING_MAP = new HashMap<>();
 
     public static void initialiseGitletRepo() {
         if (GITLET_DIR.exists()) {
@@ -92,47 +92,49 @@ public class Repository {
         new Commit("Initial commit", "ljpurcell");
     }
 
-    static void addFilesToStagingArea(String... args) {
+    static void addFileToStagingArea(String... args) {
 
-        setStagingAreaFromIndexFile();
+        setStagingMapFromIndexFile();
 
         Tree headTree = Commit.getLastCommitTree();
 
         for (String file : args) {
             String text = readContentsAsString(join(CWD, file));
             Blob newBlob = new Blob(text);
-            if (STAGING_AREA.containsKey(file)) {
+            if (STAGING_MAP.containsKey(file)) {
                 Blob lastBlob = headTree.getBlobUsingFileName(file);
                 if (newBlob.key().equals(lastBlob.key())) {
-                    STAGING_AREA.remove(file);
+                    STAGING_MAP.remove(file);
                 } else {
-                    STAGING_AREA.replace(file, newBlob.key());
+                    STAGING_MAP.replace(file, newBlob.key());
                 }
             } else {
-                STAGING_AREA.put(file, newBlob.key());
+                STAGING_MAP.put(file, newBlob.key());
             }
         }
-        STAGING_AREA.put("DUMMY KEY", "here is a value");
+        STAGING_MAP.put("DUMMY KEY", "here is a value");
 
 //        System.out.println(STAGING_AREA);
         writeStagingAreaToIndexFile();
     }
 
-    private static void setStagingAreaFromIndexFile() {
+    private static void setStagingMapFromIndexFile() {
         String stagingString = readContentsAsString(INDEX_FILE);
-        stagingString = stagingString.substring(1, stagingString.length() - 1);
-        String[] pairs = stagingString.split(",");
+        if (!stagingString.equals("")) {
+            stagingString = stagingString.substring(1, stagingString.length() - 1);
+            String[] pairs = stagingString.split(",");
 
-        for (String p : pairs) {
-            p = p.trim();
-            int equals = p.lastIndexOf("=");
-            String key = p.substring(0, equals);
-            String val = p.substring(equals + 1);
-            STAGING_AREA.put(key, val);
+            for (String p : pairs) {
+                p = p.trim();
+                int equals = p.lastIndexOf("=");
+                String key = p.substring(0, equals);
+                String val = p.substring(equals + 1);
+                STAGING_MAP.put(key, val);
+            }
         }
     }
 
     private static void writeStagingAreaToIndexFile() {
-        writeContents(INDEX_FILE, STAGING_AREA.toString());
+        writeContents(INDEX_FILE, STAGING_MAP.toString());
     }
 }

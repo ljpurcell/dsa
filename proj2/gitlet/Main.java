@@ -1,7 +1,5 @@
 package gitlet;
 
-import java.util.Arrays;
-
 /**
  * Driver class for Gitlet, a subset of the Git version-control system.
  *
@@ -24,8 +22,9 @@ public class Main {
             switch (firstArg) {
                 case "init" -> Repository.initialiseGitletRepo();
                 case "add" -> {
-                    String[] files = Arrays.copyOfRange(args, 1, args.length);
-                    Repository.addFilesToStagingArea(files);
+                    if (args.length == 2) {
+                        Repository.addFileToStagingArea(args[1]);
+                    }
                 }
                 // TODO: FILL THE REST IN
             }
