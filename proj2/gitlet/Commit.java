@@ -1,5 +1,6 @@
 package gitlet;
 
+import java.io.Serial;
 import java.util.Date;
 
 import static gitlet.Repository.*;
@@ -19,6 +20,8 @@ public class Commit extends GitletObject {
      * variable is used.
      */
 
+    @Serial
+    private static final long serialVersionUID = 1234567L;
 
     /**
      * The message of this Commit.
@@ -113,7 +116,7 @@ public class Commit extends GitletObject {
     }
 
     public static Commit getHeadCommit() {
-        String headKey = readContentsAsString(HEAD_FILE);
+        String headKey = readContentsAsString(HEAD_FILE).trim();
         return readFromDisk(headKey);
     }
 
@@ -129,6 +132,10 @@ public class Commit extends GitletObject {
 
     public String key() {
         return key;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     public String treeRef() {
