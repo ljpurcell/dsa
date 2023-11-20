@@ -36,6 +36,7 @@ public class Main {
                         Repository.createCommit(args[1]);
                     }
                 }
+                case "rm" -> Repository.removeFile(args[1]);
                 case "test" -> {
                     Commit c = Commit.getHeadCommit();
                     Tree t = Tree.getTree(c.treeRef());

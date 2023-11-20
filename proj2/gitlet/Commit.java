@@ -2,6 +2,7 @@ package gitlet;
 
 import java.io.Serial;
 import java.util.Date;
+import java.util.Map;
 
 import static gitlet.Repository.*;
 import static gitlet.Utils.*;
@@ -67,6 +68,7 @@ public class Commit extends GitletObject {
 
         writeToDisk();
         moveHeadPointerTo(key);
+        Repository.clearStagingMapAndIndexFile();
     }
 
     public static Commit getCommit(String idKey) {
@@ -98,16 +100,19 @@ public class Commit extends GitletObject {
             System.out.println("No changes added to the commit.");
         }
         else {
+            Map<String, String> treeMap = t.getFileBlobMap();
             for (String file: STAGING_MAP.keySet()) {
-                Blob b = t.getBlobUsingFileName(file);
-                if (b != null) {
-                    t.getFileBlobMap().replace(file, b.key());
+                if (STAGING_MAP.get(file) != null) {
+                    Blob b = t.getBlobUsingFileName(file);
+                    if (b != null) {
+                        treeMap.replace(file, STAGING_MAP.get(file));
+                    }
+                }
+                else {
+                    treeMap.remove(file);
                 }
             }
         }
-        // TODO need remove any files that were removed since last commit
-
-        Repository.clearStagingMapAndIndexFile();
     }
 
     private static String createCommitKey(Date date, String msg, String tree) {

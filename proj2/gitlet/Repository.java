@@ -125,6 +125,16 @@ public class Repository {
         Commit c = new Commit(msg, AUTHOR);
     }
 
+    public static void removeFile(String file) {
+        STAGING_MAP.remove(file);
+
+        /**
+         * If in last commit, then stage for removal -- how to represent?
+         *   - Remove from working directory
+         */
+        STAGING_MAP.put(file, null);
+    }
+
     public static HashMap<String, String> getStagingMap() {
         return STAGING_MAP = getStagingMapFromIndexFile();
     }
