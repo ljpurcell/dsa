@@ -143,6 +143,11 @@ public class Commit extends GitletObject {
         return message;
     }
 
+    public boolean isTrackingFile(String filename) {
+        Tree t = Tree.getTree(treeRef);
+        return t.getFileBlobMap().containsKey(filename);
+    }
+
     public String treeRef() {
         return treeRef;
     }
