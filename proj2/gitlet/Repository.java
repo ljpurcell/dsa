@@ -97,18 +97,18 @@ public class Repository {
         new Commit("Initial commit", "ljpurcell");
     }
 
-    static void addFileToStagingArea(String... args) {
+    static void addFileToStagingArea(String file) {
 
         STAGING_MAP = getStagingMap();
 
         Tree headTree = Commit.getLastCommitTree();
 
-        for (String file : args) {
+        if (join(CWD, file).exists()) {
             String text = readContentsAsString(join(CWD, file));
             Blob newBlob = new Blob(text);
             if (STAGING_MAP.containsKey(file)) {
                 Blob lastBlob = headTree.getBlobUsingFileName(file);
-                if (newBlob.key().equals(lastBlob.key())) {
+                if (lastBlob != null && newBlob.key().equals(lastBlob.key())) {
                     STAGING_MAP.remove(file);
                 } else {
                     STAGING_MAP.replace(file, newBlob.key());
@@ -116,9 +116,13 @@ public class Repository {
             } else {
                 STAGING_MAP.put(file, newBlob.key());
             }
+
+            writeStagingAreaToIndexFile();
+        }
+        else {
+            System.out.println("File does not exist.");
         }
 
-        writeStagingAreaToIndexFile();
     }
 
     public static void createCommit(String msg) {
@@ -127,12 +131,13 @@ public class Repository {
 
     public static void removeFile(String file) {
         STAGING_MAP.remove(file);
-
-        /**
-         * If in last commit, then stage for removal -- how to represent?
-         *   - Remove from working directory
-         */
+        Commit c = Commit.getHeadCommit();
+        if (c.isTrackingFile(file)) {
+            File f = Utils.join(CWD, file);
+            f.delete();
+        }
         STAGING_MAP.put(file, null);
+        writeStagingAreaToIndexFile();
     }
 
     public static HashMap<String, String> getStagingMap() {
