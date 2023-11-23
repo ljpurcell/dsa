@@ -85,6 +85,7 @@ public class Commit extends GitletObject {
             firstCommit = true;
         } else {
             Commit parent = Commit.getCommit(headKey);
+            parentCommitRef = parent.key();
             treeRef = parent.treeRef();
             dateTime = new Date();
         }
@@ -139,8 +140,14 @@ public class Commit extends GitletObject {
         return key;
     }
 
+    public Date getDate() { return dateTime; }
+
     public String getMessage() {
         return message;
+    }
+
+    public String getParentKey() {
+        return parentCommitRef;
     }
 
     public boolean isTrackingFile(String filename) {

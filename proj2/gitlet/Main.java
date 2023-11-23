@@ -1,6 +1,7 @@
 package gitlet;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Driver class for Gitlet, a subset of the Git version-control system.
@@ -37,13 +38,12 @@ public class Main {
                     }
                 }
                 case "rm" -> Repository.removeFile(args[1]);
+                case "log" -> Repository.commitLog();
                 case "test" -> {
                     Commit c = Commit.getHeadCommit();
                     Tree t = Tree.getTree(c.treeRef());
-                    for (String blobKey: t.getFileBlobMap().values()) {
-                        Blob b = Blob.readFromDisk(blobKey);
-                        System.out.println(b.getContentString());
-                    }
+                    Map<String, String> m = t.getFileBlobMap();
+                    System.out.println(m);
                 }
             }
         }

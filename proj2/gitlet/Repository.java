@@ -171,4 +171,22 @@ public class Repository {
     private static void writeStagingAreaToIndexFile() {
         writeContents(INDEX_FILE, STAGING_MAP.toString());
     }
+
+    public static void commitLog() {
+        Commit c = Commit.getHeadCommit();
+        System.out.println("===");
+        System.out.println("commit " + c.key());
+        System.out.println("Date: " + c.getDate());
+        System.out.println(c.getMessage() + '\n');
+
+        c = Commit.getCommit(c.getParentKey());
+        while (c != null) {
+            System.out.println("===");
+            System.out.println("commit " + c.key());
+            System.out.println("Date: " + c.getDate());
+            System.out.println(c.getMessage() + '\n');
+
+            c = Commit.getCommit(c.getParentKey());
+        }
+    }
 }
