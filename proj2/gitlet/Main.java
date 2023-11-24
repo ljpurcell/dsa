@@ -39,6 +39,7 @@ public class Main {
                 }
                 case "rm" -> Repository.removeFile(args[1]);
                 case "log" -> Repository.commitLog();
+                case "find" -> Repository.findCommitsWithMessage(args[1]);
                 case "test" -> {
                     Commit c = Commit.getHeadCommit();
                     Tree t = Tree.getTree(c.treeRef());

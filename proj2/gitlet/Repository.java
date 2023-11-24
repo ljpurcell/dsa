@@ -191,4 +191,15 @@ public class Repository {
             c = Commit.getCommit(c.getParentKey());
         }
     }
+
+    public static void findCommitsWithMessage(String msg) {
+        List<String> files = plainFilenamesIn(join(OBJECTS_DIR, "commits"));
+        assert files != null;
+        for (String f: files) {
+            Commit c = Commit.readFromDisk(f);
+            if (c.getMessage().equals(msg)) {
+                System.out.println(c.key());
+            }
+        }
+    }
 }

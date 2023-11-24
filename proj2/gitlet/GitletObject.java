@@ -44,8 +44,6 @@ abstract class GitletObject implements Serializable {
             throw new GitletException("Class not recognised Gitlet object: " + objectClass);
         }
 
-        String dir = key.substring(0, 2);
-        String fileName = key.substring(2);
-        return Utils.join(Repository.GITLET_DIR, "objects", classDir, dir, fileName);
+        return Utils.join(Repository.GITLET_DIR, "objects", classDir, key);
     }
 }
