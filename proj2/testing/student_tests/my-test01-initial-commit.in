@@ -1,5 +1,5 @@
 # Initialisation. Checks file exists for initial commit and the details are correct
 > init
 <<<
-E .gitlet/objects/commits/80/fab9c0ea69a0d619255bb1e4f5f5e009b63ab7
-= initial_commit.ser .gitlet/objects/commits/80/fab9c0ea69a0d619255bb1e4f5f5e009b63ab7
+E .gitlet/objects/commits/e74b0adff52366de385279a54510acc32b36f371
+= initial_commit.ser .gitlet/objects/commits/e74b0adff52366de385279a54510acc32b36f371
