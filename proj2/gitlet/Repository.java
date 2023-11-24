@@ -1,7 +1,10 @@
 package gitlet;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import static gitlet.Utils.*;
 
@@ -118,8 +121,7 @@ public class Repository {
             }
 
             writeStagingAreaToIndexFile();
-        }
-        else {
+        } else {
             System.out.println("File does not exist.");
         }
 
@@ -134,7 +136,7 @@ public class Repository {
         Commit c = Commit.getHeadCommit();
         if (c.isTrackingFile(file)) {
             File f = Utils.join(CWD, file);
-            f.delete();
+            restrictedDelete(f);
         }
         STAGING_MAP.put(file, null);
         writeStagingAreaToIndexFile();
@@ -164,8 +166,8 @@ public class Repository {
     }
 
     public static void clearStagingMapAndIndexFile() {
-       writeContents(INDEX_FILE, "");
-       STAGING_MAP.clear();
+        writeContents(INDEX_FILE, "");
+        STAGING_MAP.clear();
     }
 
     private static void writeStagingAreaToIndexFile() {
