@@ -56,7 +56,7 @@ public class Commit extends GitletObject {
          * 3. If ref exists, map to object using entry in refs
          */
 
-       boolean isFirstCommit = setUpCommitBasedOnParent();
+        boolean isFirstCommit = setUpCommitBasedOnParent();
 
         author = auth;
         message = msg;
@@ -81,7 +81,7 @@ public class Commit extends GitletObject {
 
         if (headKey.equals("")) {
             dateTime = new Date(0);
-            treeRef = new Tree().key();
+            treeRef = new Tree().save();
             firstCommit = true;
         } else {
             Commit parent = Commit.getCommit(headKey);
@@ -99,21 +99,28 @@ public class Commit extends GitletObject {
 
         if (STAGING_MAP.isEmpty()) {
             System.out.println("No changes added to the commit.");
-        }
-        else {
+        } else {
             Map<String, String> treeMap = t.getFileBlobMap();
-            for (String file: STAGING_MAP.keySet()) {
+
+            for (String file : STAGING_MAP.keySet()) {
+
                 if (STAGING_MAP.get(file) != null) {
                     Blob b = t.getBlobUsingFileName(file);
                     if (b != null) {
                         treeMap.replace(file, STAGING_MAP.get(file));
+                    } else {
+                        String text = readContentsAsString(join(CWD, file));
+                        Blob newBlob = new Blob(text);
+                        treeMap.put(file, newBlob.key());
                     }
-                }
-                else {
+                } else {
                     treeMap.remove(file);
                 }
             }
+            t.updateMap(treeMap);
         }
+
+        treeRef = t.save();
     }
 
     private static String createCommitKey(Date date, String msg, String tree) {
@@ -140,7 +147,9 @@ public class Commit extends GitletObject {
         return key;
     }
 
-    public Date getDate() { return dateTime; }
+    public Date getDate() {
+        return dateTime;
+    }
 
     public String getMessage() {
         return message;

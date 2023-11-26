@@ -20,8 +20,6 @@ public class Tree extends GitletObject implements Serializable {
 
    public Tree() {
        fileBlobMap = new HashMap<>();
-       key = Utils.sha1("tree "  + fileBlobMap);
-       writeToDisk();
    }
 
    public static Tree getTree(String k) {
@@ -40,4 +38,14 @@ public class Tree extends GitletObject implements Serializable {
    public Map<String, String> getFileBlobMap() {
        return fileBlobMap;
    }
+
+   public String save() {
+        key = Utils.sha1("tree "  + fileBlobMap);
+        writeToDisk();
+        return key;
+    }
+
+    public void updateMap(Map<String, String> updatedMap) {
+       fileBlobMap = (HashMap<String, String>) updatedMap;
+    }
 }
